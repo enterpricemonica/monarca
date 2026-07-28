@@ -28,6 +28,30 @@ with the product · shareable `?p=` links with Back-button support · butterfly 
 for products without photos · a friendly failure state that keeps WhatsApp reachable if the
 catalogue cannot load · keyboard support throughout, including a focus trap in the panel.
 
+## 🔍 The final whole-branch review
+
+Run 2026-07-28, after all eleven tasks. It looked at the system as a whole and found five
+things no per-task review could see, because each of those only saw one task's diff. **All
+five are fixed** (commit `0424cff`):
+
+- The close button did nothing on the first tap if the customer arrived on a `?p=` link
+  naming a product that had since been renamed — which is exactly what is planned for the
+  three Splash products.
+- The page was a dead end where `<script type="module">` is unsupported (old Android
+  WebViews, some in-app browsers): JS is "on", so `<noscript>` never showed, and both
+  WhatsApp buttons were inert `href="#"`. The real `wa.me` URL is now in the HTML itself.
+- The two empty categories showed a blank rectangle, while the hero promised "tónicos,
+  perfumes y aceites". They now show a short message and a WhatsApp button.
+- No Open Graph tags — on a site whose entire purpose is links shared through WhatsApp.
+- The footer *displayed* a hardcoded number while *linking* to the one in config, so
+  changing the number as the docs instruct would have half-updated it.
+
+The review also **struck one earlier finding from the record as incorrect**: the
+non-mutation test in `catalog.test.js` was said to pass for the wrong reason; the reviewer
+disproved that by breaking `filterByCategory` and watching the test fail on its own
+assertion. The remaining deferred minor findings were each judged and none blocks launch;
+they are listed in `.superpowers/sdd/progress.md`.
+
 ## ⛔ The one decision blocking launch
 
 **Publishing puts Sandra's phone number (322 708 4613) on the public internet.** That is the
