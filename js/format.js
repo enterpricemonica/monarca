@@ -1,6 +1,15 @@
 import { WHATSAPP_NUMBER, ARTISAN_NAME } from "./config.js";
 
-/** Format a COP amount the way Colombian shops write it: $18.000 */
+/**
+ * Format a COP amount the way Colombian shops write it: $18.000
+ *
+ * Relies on `toLocaleString("es-CO")`, which depends on ICU locale data
+ * being present in the JS engine. This is acceptable here: the production
+ * runtime is the browser, and every shipping browser bundles full ICU.
+ * Node is only used to run the test suite, and a Node build without full
+ * ICU data would produce a visibly wrong grouping and fail the suite
+ * loudly rather than silently misbehaving in front of a customer.
+ */
 export function formatPrice(value) {
   if (value === null || value === undefined) return "Precio a consultar";
   return `$${value.toLocaleString("es-CO")}`;
