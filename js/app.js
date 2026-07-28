@@ -5,6 +5,11 @@ import { WHATSAPP_DISPLAY, ARTISAN_NAME } from "./config.js";
 const grid = document.getElementById("catalog-grid");
 const status = document.getElementById("catalog-status");
 
+// Hoisted to module scope so both the empty-category state (renderGrid) and
+// the fetch-failure state (start) can link straight to WhatsApp without
+// duplicating the message.
+const WHATSAPP_GREETING = whatsappUrl(`Hola ${ARTISAN_NAME}, quisiera más información.`);
+
 let allProducts = [];
 
 /** Product image, or a branded tile when there is no photo yet. */
@@ -33,8 +38,21 @@ function cardFor(product) {
     </button>`;
 }
 
+/** Shown when a category filter narrows the catalogue down to zero products.
+    Never shown on first load or on the fetch-failure path — those cases
+    build their own grid content and never call renderGrid with an empty
+    list for that reason. */
+function emptyStateMarkup() {
+  return `
+    <p class="grid__empty">Aún no hay productos publicados en esta categoría.
+    Escríbenos y te contamos qué hay disponible.</p>
+    <p class="grid__empty">
+      <a class="btn btn--action" href="${WHATSAPP_GREETING}">Escribir por WhatsApp</a>
+    </p>`;
+}
+
 export function renderGrid(products) {
-  grid.innerHTML = products.map(cardFor).join("");
+  grid.innerHTML = products.length ? products.map(cardFor).join("") : emptyStateMarkup();
 }
 
 const filters = document.getElementById("filters");
@@ -216,13 +234,12 @@ document.addEventListener("keydown", (event) => {
 
 window.addEventListener("popstate", () => {
   const id = new URLSearchParams(location.search).get("p");
-  if (id) {
-    openDetail(id);
-  } else {
-    // We have just moved off a ?p= entry, so there is nothing left to unwind.
-    pushedForPanel = false;
-    hidePanel();
-  }
+  if (id && openDetail(id)) return;
+  // Either there is no id, or id names a product that no longer exists (a
+  // stale ?p= link after a rename or removal) — either way there is nothing
+  // to unwind, and the panel must not be left showing.
+  pushedForPanel = false;
+  hidePanel();
 });
 
 /** Open the product named in ?p= when someone arrives from a shared link. */
@@ -235,10 +252,12 @@ function openFromUrl() {
 }
 
 async function start() {
-  const whatsappGreeting = whatsappUrl(`Hola ${ARTISAN_NAME}, quisiera más información.`);
   for (const id of ["header-whatsapp", "footer-whatsapp"]) {
-    document.getElementById(id).href = whatsappGreeting;
+    document.getElementById(id).href = WHATSAPP_GREETING;
   }
+  // The footer link's visible text is set here too, next to the href, so the
+  // two can never drift apart if the number in config.js ever changes.
+  document.getElementById("footer-whatsapp").textContent = `WhatsApp ${WHATSAPP_DISPLAY}`;
 
   try {
     const response = await fetch("data/products.json");
@@ -250,7 +269,7 @@ async function start() {
       `No pudimos cargar el catálogo en este momento. ` +
       `Escríbenos por WhatsApp al ${WHATSAPP_DISPLAY} y te ayudamos.`;
     grid.innerHTML = `
-      <p><a class="btn btn--action" href="${whatsappGreeting}">Escribir por WhatsApp</a></p>`;
+      <p><a class="btn btn--action" href="${WHATSAPP_GREETING}">Escribir por WhatsApp</a></p>`;
     return;
   }
 

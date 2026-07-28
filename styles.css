@@ -164,6 +164,9 @@ summary { cursor: pointer; font-weight: 600; }
 .card__price { font-weight: 600; }
 .card__sold-out { color: var(--ink-soft); font-size: 0.8rem; font-weight: 600; }
 
+/* Empty-category state: spans every column of the grid it replaces. */
+.grid__empty { grid-column: 1 / -1; text-align: center; color: var(--ink-soft); }
+
 /* ---- Detail panel ---- */
 .detail {
   position: fixed;
