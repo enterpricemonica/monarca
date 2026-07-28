@@ -214,7 +214,7 @@ los enlaces que ya circulan dejarán de funcionar.
 
 ```bash
 python3 -m http.server 8000    # el sitio usa módulos ES, no funciona con file://
-node --test tests/             # pruebas de la lógica
+node --test                    # pruebas de la lógica (autodescubre tests/)
 python3 tools/validate-data.py # valida el catálogo
 ```
 ```
@@ -455,7 +455,7 @@ Expected: PASS — 7 tests, 0 failures
 
 - [ ] **Step 5: Run the whole suite**
 
-Run: `node --test tests/`
+Run: `node --test`
 Expected: PASS — 12 tests total, 0 failures
 
 - [ ] **Step 6: Commit**
@@ -1349,7 +1349,7 @@ git commit -m "Keep WhatsApp reachable when the catalogue fails to load"
 
 - [ ] **Step 1: Run the full test suite**
 
-Run: `node --test tests/`
+Run: `node --test`
 Expected: 12 tests, 0 failures.
 
 - [ ] **Step 2: Validate the catalogue data**
@@ -1440,7 +1440,7 @@ The site uses ES modules, which browsers refuse to load from `file://`. It must 
 
 ## Run the tests
 ```bash
-node --test tests/
+node --test
 ```
 Node's own test runner — nothing to install.
 

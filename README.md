@@ -19,6 +19,6 @@ los enlaces que ya circulan dejarán de funcionar.
 
 ```bash
 python3 -m http.server 8000    # el sitio usa módulos ES, no funciona con file://
-node --test tests/             # pruebas de la lógica
+node --test                    # pruebas de la lógica (autodescubre tests/)
 python3 tools/validate-data.py # valida el catálogo
 ```
