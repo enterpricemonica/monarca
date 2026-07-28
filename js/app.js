@@ -117,12 +117,20 @@ function detailMarkup(product) {
     </div>`;
 }
 
+// The card that opened the panel, so focus can go back where it came from.
+let opener = null;
+
 export function openDetail(id) {
   const product = findById(allProducts, id);
   if (!product) return false;
+  opener = document.activeElement;
   panelContent.innerHTML = detailMarkup(product);
   panel.hidden = false;
   document.body.style.overflow = "hidden";
+  // The panel claims aria-modal, so focus has to move into it. Without this a
+  // keyboard user would have to tab through the whole page behind to reach it,
+  // and a screen reader would never announce that anything had opened.
+  document.getElementById("detail-close").focus();
   document.getElementById("detail-copy").addEventListener("click", async (event) => {
     const url = `${location.origin}${location.pathname}?p=${product.id}`;
     try {
@@ -138,6 +146,10 @@ export function openDetail(id) {
 export function closeDetail() {
   panel.hidden = true;
   document.body.style.overflow = "";
+  // Return focus to the card that opened the panel, so the customer resumes
+  // browsing where they left off instead of at the top of the document.
+  if (opener && document.contains(opener)) opener.focus();
+  opener = null;
 }
 
 grid.addEventListener("click", (event) => {
