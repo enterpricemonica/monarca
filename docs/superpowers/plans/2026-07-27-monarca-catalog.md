@@ -1057,8 +1057,14 @@ export function applyFilter(category) {
   const visible = filterByCategory(allProducts, category);
   renderGrid(visible);
   renderFilters();
-  const label = category === "all" ? "productos" : CATEGORY_LABELS[category].toLowerCase();
-  status.textContent = `${visible.length} ${label}`;
+  // Always count "producto(s)" and name the category separately. Using the
+  // category label as the counted noun produces broken Spanish — "1 jabones",
+  // and worse for Cabello, where "1 cabello" means nothing at all.
+  const noun = visible.length === 1 ? "producto" : "productos";
+  status.textContent =
+    category === "all"
+      ? `${visible.length} ${noun}`
+      : `${visible.length} ${noun} en ${CATEGORY_LABELS[category]}`;
 }
 
 filters.addEventListener("click", (event) => {

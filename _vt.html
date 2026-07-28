@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#333;font:13px sans-serif;color:#fff}
+div{display:inline-block;margin:4px;vertical-align:top}iframe{border:0;background:#fff;display:block}
+</style></head><body>
+<div><span id="l1">?</span><iframe id="a" src="/#catalogo" width="330" height="300"></iframe></div>
+<div><span id="l2">?</span><iframe id="b" src="/#catalogo" width="330" height="300"></iframe></div>
+<div><span id="l3">?</span><iframe id="c" src="/#catalogo" width="330" height="300"></iframe></div>
+<script>
+setTimeout(function(){
+  function go(frame,cat,label){
+    var d=document.getElementById(frame).contentDocument;
+    if(cat) d.querySelector('[data-category="'+cat+'"]').click();
+    document.getElementById(label).textContent = (cat||'todos')+': "'+d.getElementById('catalog-status').textContent+'"';
+  }
+  go('a',null,'l1'); go('b','soaps','l2'); go('c','perfumes','l3');
+},2500);
+</script></body></html>
