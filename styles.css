@@ -1,0 +1,205 @@
+/* ---- Design tokens, sampled from the Monarca artwork ---------------------
+   --action is the ONLY colour allowed on buttons, links and interactive text.
+   --butterfly, --lilac, --lilac-pale and --sage fail WCAG AA at body size and
+   are decorative only.                                                      */
+:root {
+  --paper: #FAF7FF;
+  --ink: #222222;
+  --ink-soft: #4A4458;
+  --action: #A8551A;
+  --butterfly: #D47625;
+  --lilac: #B09DC6;
+  --lilac-pale: #C9BADB;
+  --sage: #8FA148;
+
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --sans: "Karla", system-ui, sans-serif;
+
+  --gap: 1rem;
+  --radius: 4px;
+  --max: 68rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.15; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.5rem, 9vw, 4rem); }
+h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); }
+p { margin: 0 0 1rem; }
+
+a { color: var(--action); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--action);
+  outline-offset: 2px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn--action { background: var(--action); color: #fff; }
+.btn--quiet { background: transparent; color: var(--action); border: 1px solid var(--lilac); }
+
+/* ---- Header ---- */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--lilac-pale);
+}
+.header__logo { height: 40px; width: auto; display: block; }
+.header__nav { display: flex; gap: 1rem; font-size: 0.9rem; }
+.header__cta { margin-left: auto; font-size: 0.85rem; padding: 0.5rem 1rem; }
+
+.noscript {
+  margin: 0;
+  padding: 1rem;
+  background: var(--lilac-pale);
+  text-align: center;
+}
+
+/* ---- Hero ----
+   Wreath and text share one grid cell so the text sits in the wreath's empty
+   centre. No negative margins: those depend on container width and drift.   */
+.hero { display: grid; place-items: center; text-align: center; padding: 2rem 1rem 3rem; }
+.hero__wreath, .hero__text { grid-area: 1 / 1; }
+.hero__wreath { width: min(100%, 30rem); height: auto; display: block; }
+.hero__text { max-width: 20rem; }
+.hero__tagline { font-family: var(--serif); font-size: 1.25rem; color: var(--ink-soft); }
+.hero__sub { color: var(--ink-soft); max-width: 30ch; margin-inline: auto; }
+
+/* ---- Sections ---- */
+.section { max-width: var(--max); margin-inline: auto; padding: 2.5rem 1rem; }
+.section__intro { color: var(--ink-soft); max-width: 60ch; }
+.section--artisan { background: rgba(176, 157, 198, 0.12); max-width: none; }
+.section--artisan > * { max-width: var(--max); margin-inline: auto; }
+
+.ingredients { list-style: none; padding: 0; display: grid; gap: 0.6rem; }
+.ingredients li { padding-left: 1rem; border-left: 2px solid var(--sage); }
+
+details { border-top: 1px solid var(--lilac-pale); padding: 0.75rem 0; }
+summary { cursor: pointer; font-weight: 600; }
+
+/* ---- Filters ---- */
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.filter {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--lilac);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.filter[aria-pressed="true"] { background: var(--action); color: #fff; border-color: var(--action); }
+.catalog__status { color: var(--ink-soft); font-size: 0.9rem; min-height: 1.5em; }
+
+/* ---- Product grid ---- */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); }
+@media (min-width: 40rem) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 60rem) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0;
+  border: 1px solid var(--lilac-pale);
+  border-radius: var(--radius);
+  background: #fff;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  overflow: hidden;
+}
+.card__media { aspect-ratio: 1; width: 100%; object-fit: cover; display: block; }
+.card__placeholder {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: var(--lilac-pale);
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0.5rem;
+}
+.card__body { padding: 0 0.75rem 0.85rem; display: flex; flex-direction: column; gap: 0.2rem; }
+.card__name { font-family: var(--serif); font-size: 1.05rem; }
+.card__size { color: var(--ink-soft); font-size: 0.8rem; }
+.card__price { font-weight: 600; }
+.card__sold-out { color: var(--ink-soft); font-size: 0.8rem; font-weight: 600; }
+
+/* ---- Detail panel ---- */
+.detail {
+  position: fixed;
+  inset: 0;
+  background: rgba(34, 34, 34, 0.45);
+  display: grid;
+  place-items: end center;
+  z-index: 10;
+}
+.detail[hidden] { display: none; }
+.detail__box {
+  background: var(--paper);
+  width: 100%;
+  max-width: 34rem;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+  border-radius: 12px 12px 0 0;
+  position: relative;
+}
+@media (min-width: 40rem) {
+  .detail { place-items: center; }
+  .detail__box { border-radius: 12px; }
+}
+.detail__close {
+  position: absolute; top: 0.5rem; right: 0.75rem;
+  background: none; border: none; font-size: 1.75rem; line-height: 1;
+  cursor: pointer; color: var(--ink-soft);
+}
+.detail__media { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); }
+.detail__price { font-size: 1.25rem; font-weight: 600; }
+.detail__note {
+  border-left: 3px solid var(--butterfly);
+  padding-left: 0.85rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; list-style: none; padding: 0; }
+.tags li {
+  background: var(--lilac-pale);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+.detail__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+
+/* ---- Footer ---- */
+.footer { text-align: center; padding: 2.5rem 1rem; border-top: 1px solid var(--lilac-pale); }
+.footer__logo { height: 48px; width: auto; }
+.footer__fine { color: var(--ink-soft); font-size: 0.8rem; max-width: 40ch; margin-inline: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
