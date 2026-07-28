@@ -116,7 +116,7 @@ One entry in `data/products.json`:
 |---|---|---|
 | `id` | string | Lowercase, hyphenated, unique. **Becomes the shareable URL — never change it once shared.** |
 | `name` | string | Spanish, as printed on the label |
-| `category` | string | One of `tonics`, `perfumes`, `oils` |
+| `category` | string | One of `tonics`, `perfumes`, `oils`, `soaps`, `hair` |
 | `price` | number | Plain integer in COP: `18000`, never `"$18.000"` |
 | `size` | string | Presentation, e.g. `"250 ml"` |
 | `description` | string | One or two sentences, cosmetic language (see §8) |
@@ -125,8 +125,14 @@ One entry in `data/products.json`:
 | `photo` | string \| null | Filename in `assets/products/`. **`null` is normal**, not an error |
 | `available` | boolean | `false` marks the card *Agotado* |
 
-Category identifiers are English; their Spanish labels (`Tónicos`, `Perfumes`, `Aceites`)
-live in `app.js` as a lookup. Prices are formatted for Colombia at display time
+Category identifiers are English; their Spanish labels (`Tónicos`, `Perfumes`, `Aceites`,
+`Jabones`, `Cabello`) live in `app.js` as a lookup.
+
+> **Amended 2026-07-27, during Task 1.** The catalogue was originally specified with three
+> categories, from a verbal description of the range. Transcribing the printed catalogue
+> revealed a *Jabón artesanal* (eight scents) and a *Shampoo artesanal*, neither of which is
+> a tonic, a perfume or an oil. Rather than mislabel them — a customer filtering "Aceites"
+> should not find a bar of soap — the enum was widened to five before any UI was built. Prices are formatted for Colombia at display time
 (`18000` → `$18.000`), so sorting stays numeric and formatting stays consistent.
 
 ---

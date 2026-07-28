@@ -47,7 +47,7 @@ Product schema, all fields required, `artisanNote` / `photo` / `price` nullable:
 ```
 id          string   lowercase-hyphenated, unique, permanent (it is the public URL)
 name        string   Spanish
-category    string   "tonics" | "perfumes" | "oils"
+category    string   "tonics" | "perfumes" | "oils" | "soaps" | "hair"
 price       number|null   integer COP, e.g. 18000. null means "ask for the price"
 size        string   e.g. "250 ml"
 description string   Spanish, cosmetic language only
@@ -117,7 +117,7 @@ the grid is simply empty. This script turns that into a loud error.
 import json
 import sys
 
-CATEGORIES = {"tonics", "perfumes", "oils"}
+CATEGORIES = {"tonics", "perfumes", "oils", "soaps", "hair"}
 REQUIRED = {
     "id": str, "name": str, "category": str, "size": str,
     "description": str, "ingredients": list, "available": bool,
@@ -340,7 +340,7 @@ git commit -m "Add price formatting and WhatsApp message building"
 **Interfaces:**
 - Consumes: the product shape from Task 1
 - Produces:
-  - `CATEGORY_LABELS: Record<string, string>` — `{ tonics: "Tónicos", perfumes: "Perfumes", oils: "Aceites" }`
+  - `CATEGORY_LABELS: Record<string, string>` — `{ tonics: "Tónicos", perfumes: "Perfumes", oils: "Aceites", soaps: "Jabones", hair: "Cabello" }`
   - `filterByCategory(products: object[], category: string): object[]` — `"all"` returns every product
   - `findById(products: object[], id: string): object|null`
   - `countByCategory(products: object[]): Record<string, number>` — includes an `all` key
@@ -357,12 +357,15 @@ const products = [
   { id: "tonico-romero", name: "Tónico de romero", category: "tonics" },
   { id: "perfume-lavanda", name: "Perfume de lavanda", category: "perfumes" },
   { id: "aceite-calendula", name: "Aceite de caléndula", category: "oils" },
+  { id: "jabon-manzanilla", name: "Jabón de manzanilla", category: "soaps" },
 ];
 
 test("category labels are the Spanish names shown to customers", () => {
   assert.equal(CATEGORY_LABELS.tonics, "Tónicos");
   assert.equal(CATEGORY_LABELS.perfumes, "Perfumes");
   assert.equal(CATEGORY_LABELS.oils, "Aceites");
+  assert.equal(CATEGORY_LABELS.soaps, "Jabones");
+  assert.equal(CATEGORY_LABELS.hair, "Cabello");
 });
 
 test("filterByCategory narrows to one category", () => {
@@ -373,13 +376,17 @@ test("filterByCategory narrows to one category", () => {
 });
 
 test("filterByCategory with 'all' returns everything", () => {
-  assert.equal(filterByCategory(products, "all").length, 4);
+  assert.equal(filterByCategory(products, "all").length, 5);
+});
+
+test("filterByCategory returns an empty list for a category with no products", () => {
+  assert.deepEqual(filterByCategory(products, "hair"), []);
 });
 
 test("filterByCategory does not mutate the original list", () => {
   const copy = filterByCategory(products, "all");
   copy.pop();
-  assert.equal(products.length, 4);
+  assert.equal(products.length, 5);
 });
 
 test("findById returns the product or null, never undefined", () => {
@@ -387,9 +394,9 @@ test("findById returns the product or null, never undefined", () => {
   assert.equal(findById(products, "no-existe"), null);
 });
 
-test("countByCategory counts each category and the total", () => {
+test("countByCategory counts every category, including empty ones", () => {
   assert.deepEqual(countByCategory(products),
-    { all: 4, tonics: 2, perfumes: 1, oils: 1 });
+    { all: 5, tonics: 2, perfumes: 1, oils: 1, soaps: 1, hair: 0 });
 });
 ```
 
@@ -406,6 +413,8 @@ export const CATEGORY_LABELS = {
   tonics: "Tónicos",
   perfumes: "Perfumes",
   oils: "Aceites",
+  soaps: "Jabones",
+  hair: "Cabello",
 };
 
 /** Return the products in one category, or all of them for "all". */
@@ -434,12 +443,12 @@ export function countByCategory(products) {
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `node --test tests/catalog.test.js`
-Expected: PASS — 6 tests, 0 failures
+Expected: PASS — 7 tests, 0 failures
 
 - [ ] **Step 5: Run the whole suite**
 
 Run: `node --test tests/`
-Expected: PASS — 11 tests total, 0 failures
+Expected: PASS — 12 tests total, 0 failures
 
 - [ ] **Step 6: Commit**
 
@@ -1045,9 +1054,10 @@ with:
 
 - [ ] **Step 2: Reload and test every filter**
 
-Expected: four buttons with counts, e.g. `Todos (10) · Tónicos (6) · Perfumes (2) · Aceites (2)`.
+Expected: six buttons with counts — `Todos · Tónicos · Perfumes · Aceites · Jabones · Cabello`.
 Clicking one narrows the grid, marks that button as pressed, and updates the status line.
-The counts must match what `data/products.json` actually contains.
+The counts must match what `data/products.json` actually contains, and a category with no
+products must still show with `(0)` rather than disappearing.
 
 - [ ] **Step 3: Commit**
 
@@ -1332,7 +1342,7 @@ git commit -m "Keep WhatsApp reachable when the catalogue fails to load"
 - [ ] **Step 1: Run the full test suite**
 
 Run: `node --test tests/`
-Expected: 11 tests, 0 failures.
+Expected: 12 tests, 0 failures.
 
 - [ ] **Step 2: Validate the catalogue data**
 
