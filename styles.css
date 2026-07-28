@@ -76,13 +76,28 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 }
 
 /* ---- Hero ----
-   Wreath and text share one grid cell so the text sits in the wreath's empty
-   centre. No negative margins: those depend on container width and drift.   */
-.hero { display: grid; place-items: center; text-align: center; padding: 2rem 1rem 3rem; }
+   .hero__art holds the wreath and heading on one grid cell so the heading sits
+   in the wreath's empty centre. The column uses minmax(0, 30rem): both bounds
+   are fixed lengths (no intrinsic keyword), so the track is sized purely from
+   available space, never from the image's 960px intrinsic width — that keeps
+   it shrinkable on narrow viewports instead of forcing horizontal overflow.
+   The supporting line and button sit below the wreath, not inside it, since
+   the clear centre (~63% of the image width) only has room for two lines.  */
+.hero { text-align: center; padding: 2rem 1rem 3rem; }
+.hero__art {
+  display: grid;
+  grid-template-columns: minmax(0, 30rem);
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
 .hero__wreath, .hero__text { grid-area: 1 / 1; }
-.hero__wreath { width: min(100%, 30rem); height: auto; display: block; }
-.hero__text { max-width: 20rem; }
-.hero__tagline { font-family: var(--serif); font-size: 1.25rem; color: var(--ink-soft); }
+.hero__wreath { width: 100%; height: auto; display: block; }
+/* Width is a % of the grid track (same track the wreath fills), so the text
+   box scales with the wreath at every viewport instead of using a fixed rem
+   value that could outgrow the ring. ~45% approximates the square inscribed
+   in the ~63%-wide clear disc. */
+.hero__text { place-self: center; width: 45%; }
+.hero__tagline { font-family: var(--serif); font-size: 1.25rem; color: var(--ink-soft); margin: 0; }
 .hero__sub { color: var(--ink-soft); max-width: 30ch; margin-inline: auto; }
 
 /* ---- Sections ---- */
