@@ -37,6 +37,35 @@ export function renderGrid(products) {
   grid.innerHTML = products.map(cardFor).join("");
 }
 
+const filters = document.getElementById("filters");
+let currentCategory = "all";
+
+function renderFilters() {
+  const counts = countByCategory(allProducts);
+  const buttons = [["all", "Todos"], ...Object.entries(CATEGORY_LABELS)];
+  filters.innerHTML = buttons
+    .map(([key, label]) => `
+      <button class="filter" type="button" data-category="${key}"
+              aria-pressed="${key === currentCategory}">
+        ${label} (${counts[key] ?? 0})
+      </button>`)
+    .join("");
+}
+
+export function applyFilter(category) {
+  currentCategory = category;
+  const visible = filterByCategory(allProducts, category);
+  renderGrid(visible);
+  renderFilters();
+  const label = category === "all" ? "productos" : CATEGORY_LABELS[category].toLowerCase();
+  status.textContent = `${visible.length} ${label}`;
+}
+
+filters.addEventListener("click", (event) => {
+  const button = event.target.closest(".filter");
+  if (button) applyFilter(button.dataset.category);
+});
+
 async function start() {
   const whatsappGreeting = whatsappUrl(`Hola ${ARTISAN_NAME}, quisiera más información.`);
   for (const id of ["header-whatsapp", "footer-whatsapp"]) {
@@ -45,8 +74,7 @@ async function start() {
 
   const response = await fetch("data/products.json");
   allProducts = await response.json();
-  renderGrid(allProducts);
-  status.textContent = `${allProducts.length} productos`;
+  applyFilter("all");
 }
 
 start();
