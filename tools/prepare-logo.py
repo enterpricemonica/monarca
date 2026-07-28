@@ -42,7 +42,7 @@ def remove_light_background(image, threshold=238, denoise=0):
     return image
 
 
-def butterfly_favicon(mark, size=256, padding=0.10):
+def butterfly_favicon(mark, size=256, padding=0.24):
     """Crop the butterfly out of the wordmark and return it as a square icon.
 
     The wordmark is roughly 2.4:1, so using it as a favicon squashes it into an
@@ -67,19 +67,52 @@ def butterfly_favicon(mark, size=256, padding=0.10):
 
     # Square it around the butterfly's centre so nothing is distorted.
     #
-    # The square catches a short fragment of the script's stroke in its
-    # lower-left corner, because the wordmark's baseline passes just under the
-    # butterfly. Lifting the centre to exclude it was tried and rejected: it
-    # clipped the upper wing tip, and a clipped wing reads as a mistake while a
-    # stray stroke reads as an antenna. Padding is kept generous for the same
-    # reason — nothing that belongs to the butterfly may touch an edge.
+    # `padding` has to be generous: the bounding box above is measured from
+    # ORANGE pixels only, and the butterfly's black outline and white wing
+    # spots sit outside that. Measured at 0.10 the wing tips were still being
+    # clipped by the top edge. Lifting the centre instead was tried and
+    # rejected — it traded the clip for a worse one.
     side = int(max(right - left, bottom - top) * (1 + 2 * padding))
     cx, cy = (left + right) // 2, (top + bottom) // 2
     box = (cx - side // 2, cy - side // 2, cx + side // 2, cy + side // 2)
 
     icon = Image.new("RGBA", (side, side), (0, 0, 0, 0))
     icon.paste(mark.crop(box), (0, 0))
-    return icon.resize((size, size), Image.LANCZOS)
+    return keep_near_orange(icon).resize((size, size), Image.LANCZOS)
+
+
+def keep_near_orange(icon, reach=14):
+    """Erase everything that isn't the butterfly.
+
+    The wordmark's baseline sweeps diagonally through the square crop, so the
+    icon would otherwise carry two stray fragments of script stroke entering at
+    the edges. A connected-component fill can't separate them — the final "a"
+    runs into the butterfly's wing — but proximity to colour can: every black
+    pixel belonging to the butterfly is an outline lying within a few pixels of
+    its orange, while the script's stroke is orange-free for its whole length.
+
+    So: dilate the orange mask by `reach` pixels and keep only what falls
+    inside it.
+    """
+    pixels = icon.load()
+    width, height = icon.size
+
+    orange = Image.new("L", icon.size, 0)
+    orange_pixels = orange.load()
+    for y in range(height):
+        for x in range(width):
+            r, g, b, a = pixels[x, y]
+            if a > 40 and r > 120 and r - b > 45 and g < r:
+                orange_pixels[x, y] = 255
+
+    # MaxFilter grows the mask; an odd window of 2*reach+1 grows it by `reach`.
+    grown = orange.filter(ImageFilter.MaxFilter(size=2 * reach + 1)).load()
+    for y in range(height):
+        for x in range(width):
+            if not grown[x, y]:
+                r, g, b, _ = pixels[x, y]
+                pixels[x, y] = (r, g, b, 0)
+    return icon
 
 
 def main():

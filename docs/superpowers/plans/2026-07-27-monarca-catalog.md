@@ -472,7 +472,14 @@ git commit -m "Add catalogue filtering, lookup and counts"
 **Files:**
 - Create: `assets/logo-monarca.png`
 - Create: `assets/wreath-monarca.png`
+- Create: `assets/favicon-monarca.png`
 - Create: `tools/prepare-logo.py`
+
+> **Added 2026-07-27 during the task.** A third asset was needed. The wordmark is
+> roughly 2.4:1, so using it as the favicon squashes it into an illegible smear at 16 px.
+> `favicon-monarca.png` is a square 256×256 crop of the butterfly alone — the one element
+> of this identity that survives that size. It is derived by the same script, locating the
+> butterfly by hue rather than fixed coordinates.
 
 **Interfaces:**
 - Consumes: `/mnt/c/Users/santa/Downloads/monarca-logo.png.png` (1080×1080, RGB, no alpha) and `/mnt/c/Users/santa/Downloads/11.png` (contact page, carries the clean wordmark)
@@ -593,7 +600,7 @@ git commit -m "Derive transparent logo mark and wreath from source artwork"
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monarca — Productos artesanales</title>
   <meta name="description" content="Tónicos, perfumes y aceites artesanales. Pedidos por WhatsApp." />
-  <link rel="icon" href="assets/logo-monarca.png" />
+  <link rel="icon" href="assets/favicon-monarca.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Karla:wght@400;600&display=swap" rel="stylesheet" />
