@@ -162,7 +162,29 @@ panel.addEventListener("click", (event) => {
   if (event.target === panel) closeDetail();
 });
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !panel.hidden) closeDetail();
+  if (panel.hidden) return;
+
+  if (event.key === "Escape") {
+    closeDetail();
+    return;
+  }
+
+  // Keep Tab inside the panel. It is marked aria-modal, and without this a
+  // keyboard user tabs straight out of it into the footer behind — able to
+  // operate a page they are being told is blocked.
+  if (event.key !== "Tab") return;
+  const focusable = panel.querySelectorAll("button, a[href]");
+  if (focusable.length === 0) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
 });
 
 async function start() {
