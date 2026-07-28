@@ -19,7 +19,7 @@ These apply to every task without being repeated.
 
 - **Site content is Spanish. Code is English.** File names, JSON keys, function names, variables, comments, commit messages and docs in English; every string the customer reads in Spanish.
 - **No build step.** Adding a product must never require running a compiler or generator. Editing `data/products.json` and pushing is the entire update workflow.
-- **No dependencies.** No npm packages, no frameworks, no CSS libraries. Tests use `node:test` and `node:assert`, which ship with Node.
+- **No dependencies.** No npm packages, no frameworks, no CSS libraries. Tests use `node:test` and `node:assert`, which ship with Node. A `package.json` **does** exist, declaring `"type": "module"` and zero dependencies — added 2026-07-27 during Task 2, because without it Node walked up to an unrelated project's `package.json` at `/home/santa/projects/package.json` and treated the ES modules as CommonJS. It declares the module system; it does not introduce a dependency or a build step. **Never add a `dependencies` or `devDependencies` block to it.**
 - **Colour tokens, exact values:** `--paper: #FAF7FF`, `--ink: #222222`, `--ink-soft: #4A4458`, `--action: #A8551A`, `--butterfly: #D47625`, `--lilac: #B09DC6`, `--lilac-pale: #C9BADB`, `--sage: #8FA148`.
 - **Contrast rule:** `--action` (`#A8551A`) is the only colour permitted for buttons, links and any interactive text. `--butterfly`, `--lilac`, `--lilac-pale` and `--sage` are decorative only and must never carry text — they fail WCAG AA at body size.
 - **Single light theme.** No dark mode. Do not add `prefers-color-scheme` rules.

@@ -1,0 +1,11 @@
+{
+  "name": "monarca",
+  "private": true,
+  "type": "module",
+  "description": "Static product catalogue for Monarca. No dependencies by design.",
+  "scripts": {
+    "test": "node --test",
+    "serve": "python3 -m http.server 8000",
+    "validate": "python3 tools/validate-data.py"
+  }
+}
