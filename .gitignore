@@ -13,3 +13,8 @@ source-material/
 # Throwaway iframe harnesses used to screenshot the page at a real phone width
 _vt*.html
 _viewport-test.html
+
+# Never needed: this project has zero dependencies by design.
+# An agent once installed jsdom here to poke at the DOM; it left 27 MB behind.
+node_modules/
+package-lock.json
