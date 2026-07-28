@@ -171,6 +171,14 @@ if __name__ == "__main__":
     sys.exit(main(*sys.argv[1:]))
 ```
 
+> **Amended 2026-07-27 after review.** The validator above shipped with four gaps that a
+> code review caught, all fixed in commit `24cf101`. The version in `tools/validate-data.py`
+> is authoritative; this listing is the starting point it grew from. The fixes were:
+> `price: true` passed because Python's `bool` subclasses `int`; the `id` format was never
+> checked at all, so `"Agua De Rosas!"` was accepted as a public URL; `ingredients` element
+> types were unchecked; and a non-dict entry in the array crashed with a raw traceback
+> instead of the script's own error format.
+
 - [ ] **Step 4: Run the validator and confirm it passes**
 
 Run: `python3 tools/validate-data.py`
