@@ -140,6 +140,9 @@ export function openDetail(id) {
       event.target.textContent = url;
     }
   });
+  if (new URLSearchParams(location.search).get("p") !== product.id) {
+    history.pushState({ product: product.id }, "", `?p=${product.id}`);
+  }
   return true;
 }
 
@@ -150,6 +153,9 @@ export function closeDetail() {
   // browsing where they left off instead of at the top of the document.
   if (opener && document.contains(opener)) opener.focus();
   opener = null;
+  if (new URLSearchParams(location.search).has("p")) {
+    history.pushState({}, "", location.pathname);
+  }
 }
 
 grid.addEventListener("click", (event) => {
@@ -187,6 +193,28 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+window.addEventListener("popstate", () => {
+  const id = new URLSearchParams(location.search).get("p");
+  if (id) {
+    openDetail(id);
+  } else {
+    panel.hidden = true;
+    document.body.style.overflow = "";
+    // Restore focus the same way closeDetail does, but without touching history.
+    if (opener && document.contains(opener)) opener.focus();
+    opener = null;
+  }
+});
+
+/** Open the product named in ?p= when someone arrives from a shared link. */
+function openFromUrl() {
+  const id = new URLSearchParams(location.search).get("p");
+  if (!id) return;
+  if (!openDetail(id)) {
+    status.textContent = "Ese producto ya no está disponible. Aquí está el catálogo completo.";
+  }
+}
+
 async function start() {
   const whatsappGreeting = whatsappUrl(`Hola ${ARTISAN_NAME}, quisiera más información.`);
   for (const id of ["header-whatsapp", "footer-whatsapp"]) {
@@ -196,6 +224,7 @@ async function start() {
   const response = await fetch("data/products.json");
   allProducts = await response.json();
   applyFilter("all");
+  openFromUrl();
 }
 
 start();
