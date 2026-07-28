@@ -1270,13 +1270,38 @@ Change `openDetail` so it records the URL. Add this line immediately before `ret
   }
 ```
 
-Change `closeDetail` so leaving the panel clears the URL. Add at the end of the function:
+Change `closeDetail` so leaving the panel **unwinds** the entry that opening
+added. Pushing a new entry on close is wrong and was the plan's original error:
+every product viewed then leaves two entries behind, so a customer tapping Back
+to return to Instagram instead watches the panels reopen one at a time. Split the
+DOM work into `hidePanel()` and make closing go back — guarding the case where
+the visitor arrived straight from a shared `?p=` link and has no entry of ours to
+unwind, since `history.back()` would throw them off the site entirely:
 
 ```javascript
-  if (new URLSearchParams(location.search).has("p")) {
-    history.pushState({}, "", location.pathname);
+/** Hide the panel and put focus back. Touches no history. */
+function hidePanel() {
+  panel.hidden = true;
+  document.body.style.overflow = "";
+  if (opener && document.contains(opener)) opener.focus();
+  opener = null;
+}
+
+export function closeDetail() {
+  if (pushedForPanel) {
+    pushedForPanel = false;
+    history.back();          // popstate calls hidePanel()
+    return;
   }
+  hidePanel();
+  if (new URLSearchParams(location.search).has("p")) {
+    history.replaceState({}, "", location.pathname);
+  }
+}
 ```
+
+`pushedForPanel` is a module-level flag set to `true` wherever `openDetail`
+pushes, and cleared in the `popstate` handler.
 
 Add the Back-button handler and the on-load check:
 

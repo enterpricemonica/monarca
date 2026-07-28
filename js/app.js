@@ -119,6 +119,8 @@ function detailMarkup(product) {
 
 // The card that opened the panel, so focus can go back where it came from.
 let opener = null;
+// Whether WE pushed the current history entry, and so may unwind it on close.
+let pushedForPanel = false;
 
 export function openDetail(id) {
   const product = findById(allProducts, id);
@@ -142,19 +144,38 @@ export function openDetail(id) {
   });
   if (new URLSearchParams(location.search).get("p") !== product.id) {
     history.pushState({ product: product.id }, "", `?p=${product.id}`);
+    pushedForPanel = true;
   }
   return true;
 }
 
-export function closeDetail() {
+/** Hide the panel and put focus back. Touches no history. */
+function hidePanel() {
   panel.hidden = true;
   document.body.style.overflow = "";
   // Return focus to the card that opened the panel, so the customer resumes
   // browsing where they left off instead of at the top of the document.
   if (opener && document.contains(opener)) opener.focus();
   opener = null;
+}
+
+export function closeDetail() {
+  // Closing must UNWIND the history entry that opening added, not stack a new
+  // one on top. Pushing on close means every product a customer views leaves
+  // two entries behind, so tapping Back to return to Instagram instead reopens
+  // the panels one by one.
+  if (pushedForPanel) {
+    pushedForPanel = false;
+    history.back();          // popstate calls hidePanel()
+    return;
+  }
+
+  // No entry of ours to unwind — the customer arrived straight from a shared
+  // ?p= link, so this is the first page in their history. Going back would
+  // throw them out of the site entirely; rewrite the URL in place instead.
+  hidePanel();
   if (new URLSearchParams(location.search).has("p")) {
-    history.pushState({}, "", location.pathname);
+    history.replaceState({}, "", location.pathname);
   }
 }
 
@@ -198,11 +219,9 @@ window.addEventListener("popstate", () => {
   if (id) {
     openDetail(id);
   } else {
-    panel.hidden = true;
-    document.body.style.overflow = "";
-    // Restore focus the same way closeDetail does, but without touching history.
-    if (opener && document.contains(opener)) opener.focus();
-    opener = null;
+    // We have just moved off a ?p= entry, so there is nothing left to unwind.
+    pushedForPanel = false;
+    hidePanel();
   }
 });
 
