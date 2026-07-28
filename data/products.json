@@ -1,0 +1,14 @@
+[
+  {
+    "id": "agua-de-rosas",
+    "name": "Agua de rosas",
+    "category": "tonics",
+    "price": null,
+    "size": "250 ml",
+    "description": "Tónico facial refrescante de aroma suave, elaborado de forma artesanal.",
+    "ingredients": ["Rosa", "Agua destilada"],
+    "artisanNote": "Hacer uso completo del producto para recibir los beneficios.",
+    "photo": null,
+    "available": true
+  }
+]

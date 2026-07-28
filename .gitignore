@@ -1,0 +1,11 @@
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+
+# Source material not for publication
+source-material/
