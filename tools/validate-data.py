@@ -7,7 +7,7 @@ the grid is simply empty. This script turns that into a loud error.
 import json
 import sys
 
-CATEGORIES = {"tonics", "perfumes", "oils"}
+CATEGORIES = {"tonics", "perfumes", "oils", "soaps", "hair"}
 REQUIRED = {
     "id": str, "name": str, "category": str, "size": str,
     "description": str, "ingredients": list, "available": bool,

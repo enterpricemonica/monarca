@@ -10,5 +10,29 @@
     "artisanNote": "Hacer uso completo del producto para recibir los beneficios.",
     "photo": null,
     "available": true
+  },
+  {
+    "id": "jabon-artesanal",
+    "name": "Jabón artesanal",
+    "category": "soaps",
+    "price": null,
+    "size": "Consultar presentación",
+    "description": "Jabón de barra elaborado de forma artesanal, disponible en ocho aromas para elegir.",
+    "ingredients": ["Manzanilla", "Rosas", "Romero", "Limón", "Caléndula", "Ylang Ylang", "Cedro", "Lavanda"],
+    "artisanNote": "Hacer uso completo del producto para recibir los beneficios.",
+    "photo": null,
+    "available": true
+  },
+  {
+    "id": "shampoo-artesanal",
+    "name": "Shampoo artesanal",
+    "category": "hair",
+    "price": null,
+    "size": "Consultar presentación",
+    "description": "Shampoo sólido artesanal presentado en frasco, de aroma fresco y textura cremosa que hace espuma suave al contacto con el agua. Ideal para el uso diario en el cabello.",
+    "ingredients": ["Lavanda", "Ciprés", "Romero"],
+    "artisanNote": "Hacer uso completo del producto para recibir los beneficios.",
+    "photo": null,
+    "available": true
   }
 ]
