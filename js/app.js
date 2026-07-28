@@ -82,6 +82,77 @@ filters.addEventListener("click", (event) => {
   if (button) applyFilter(button.dataset.category);
 });
 
+// Detail panel
+const panel = document.getElementById("detail-panel");
+const panelContent = document.getElementById("detail-content");
+
+function detailMarkup(product) {
+  const media = product.photo
+    ? `<img class="detail__media" src="assets/products/${product.photo}" alt="${product.name}" />`
+    : `<span class="card__placeholder" aria-hidden="true">🦋<br />${product.name}</span>`;
+
+  const note = product.artisanNote
+    ? `<p class="detail__note"><strong>Recomendación de la artesana:</strong>
+         ${product.artisanNote}</p>`
+    : "";
+
+  const tags = product.ingredients.length
+    ? `<ul class="tags">${product.ingredients.map((i) => `<li>${i}</li>`).join("")}</ul>`
+    : "";
+
+  const orderLabel = product.available ? "Pedir por WhatsApp" : "Preguntar disponibilidad";
+
+  return `
+    ${media}
+    <h2 id="detail-title">${product.name}</h2>
+    <p class="card__size">${product.size}</p>
+    <p class="detail__price">${formatPrice(product.price)}</p>
+    <p>${product.description}</p>
+    ${tags}
+    ${note}
+    <div class="detail__actions">
+      <a class="btn btn--action" id="detail-order" target="_blank" rel="noopener"
+         href="${whatsappUrl(buildOrderMessage(product))}">${orderLabel}</a>
+      <button class="btn btn--quiet" id="detail-copy" type="button">Copiar enlace</button>
+    </div>`;
+}
+
+export function openDetail(id) {
+  const product = findById(allProducts, id);
+  if (!product) return false;
+  panelContent.innerHTML = detailMarkup(product);
+  panel.hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("detail-copy").addEventListener("click", async (event) => {
+    const url = `${location.origin}${location.pathname}?p=${product.id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      event.target.textContent = "¡Enlace copiado!";
+    } catch {
+      event.target.textContent = url;
+    }
+  });
+  return true;
+}
+
+export function closeDetail() {
+  panel.hidden = true;
+  document.body.style.overflow = "";
+}
+
+grid.addEventListener("click", (event) => {
+  const card = event.target.closest(".card");
+  if (card) openDetail(card.dataset.id);
+});
+
+document.getElementById("detail-close").addEventListener("click", closeDetail);
+panel.addEventListener("click", (event) => {
+  if (event.target === panel) closeDetail();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !panel.hidden) closeDetail();
+});
+
 async function start() {
   const whatsappGreeting = whatsappUrl(`Hola ${ARTISAN_NAME}, quisiera más información.`);
   for (const id of ["header-whatsapp", "footer-whatsapp"]) {
