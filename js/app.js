@@ -240,8 +240,20 @@ async function start() {
     document.getElementById(id).href = whatsappGreeting;
   }
 
-  const response = await fetch("data/products.json");
-  allProducts = await response.json();
+  try {
+    const response = await fetch("data/products.json");
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    allProducts = await response.json();
+  } catch (error) {
+    console.error("No se pudo cargar el catálogo:", error);
+    status.textContent =
+      `No pudimos cargar el catálogo en este momento. ` +
+      `Escríbenos por WhatsApp al ${WHATSAPP_DISPLAY} y te ayudamos.`;
+    grid.innerHTML = `
+      <p><a class="btn btn--action" href="${whatsappGreeting}">Escribir por WhatsApp</a></p>`;
+    return;
+  }
+
   applyFilter("all");
   openFromUrl();
 }
