@@ -115,9 +115,44 @@ def keep_near_orange(icon, reach=14):
     return icon
 
 
+def clear_centre(wreath, radius=0.315):
+    """Empty the middle of the wreath so it becomes a frame, not a poster.
+
+    The source artwork has "BIENVENIDA", the "Monarca" script, the tagline and
+    "PRODUCTOS ARTESANALES" baked into the ring's centre. Left in, the hero
+    would show all of that twice — once as pixels, once as the real HTML
+    heading laid over it — and baked-in text cannot reflow, so on a 360 px
+    phone the tagline would be unreadable.
+
+    Erasing a disc clears every one of those elements while staying well inside
+    the thin lavender circle (which sits at roughly 0.41 of the width) and
+    nowhere near the flowers.
+    """
+    wreath = wreath.convert("RGBA")
+    pixels = wreath.load()
+    width, height = wreath.size
+    cx, cy = width / 2, height / 2
+    limit = (radius * width) ** 2
+    for y in range(height):
+        dy2 = (y - cy) ** 2
+        for x in range(width):
+            if (x - cx) ** 2 + dy2 <= limit:
+                r, g, b, _ = pixels[x, y]
+                pixels[x, y] = (r, g, b, 0)
+    return wreath
+
+
+def compress(image, colors=200):
+    """Shrink the palette. These are watercolour and line art, not photographs,
+    so 200 colours is visually indistinguishable while cutting roughly 77% of
+    the bytes — which matters for customers browsing on mobile data."""
+    return image.quantize(colors=colors, method=Image.FASTOCTREE)
+
+
 def main():
-    wreath = remove_light_background(Image.open(SOURCE_WREATH))
-    wreath.save("assets/wreath-monarca.png")
+    wreath = clear_centre(remove_light_background(Image.open(SOURCE_WREATH)))
+    wreath.thumbnail((960, 960), Image.LANCZOS)
+    compress(wreath).save("assets/wreath-monarca.png", optimize=True)
     print("wrote assets/wreath-monarca.png", wreath.size)
 
     # The wordmark occupies roughly the middle band of the contact page.
@@ -128,11 +163,11 @@ def main():
     # textured paper background; denoise=9 mops up the grain (see docstring).
     mark = remove_light_background(page.crop(box), threshold=232, denoise=9)
     mark.thumbnail((600, 600), Image.LANCZOS)
-    mark.save("assets/logo-monarca.png")
+    icon = butterfly_favicon(mark)          # derived before the palette is cut
+    compress(mark).save("assets/logo-monarca.png", optimize=True)
     print("wrote assets/logo-monarca.png", mark.size)
 
-    icon = butterfly_favicon(mark)
-    icon.save("assets/favicon-monarca.png")
+    compress(icon).save("assets/favicon-monarca.png", optimize=True)
     print("wrote assets/favicon-monarca.png", icon.size)
 
 

@@ -480,6 +480,19 @@ git commit -m "Add catalogue filtering, lookup and counts"
 > `favicon-monarca.png` is a square 256×256 crop of the butterfly alone — the one element
 > of this identity that survives that size. It is derived by the same script, locating the
 > butterfly by hue rather than fixed coordinates.
+>
+> **Two further corrections made during the task:**
+>
+> *The wreath's centre is now erased.* The source artwork has "BIENVENIDA", the "Monarca"
+> script, the tagline and "PRODUCTOS ARTESANALES" baked into the middle of the ring. Task 5
+> lays the real HTML heading and tagline over that same spot, so every one of them would
+> have appeared twice, overlapping. Baked-in text also cannot reflow — on a 360 px phone the
+> tagline was unreadable. The script now clears a disc inside the ring, leaving a frame.
+>
+> *All three assets are palette-compressed and the wreath resized to 960 px.* They were
+> 766 KB together, on a mobile-first site whose customers browse on Colombian mobile data.
+> They are now 141 KB — 82% less — with no visible loss, because this is flat watercolour
+> and line art rather than photography.
 
 **Interfaces:**
 - Consumes: `/mnt/c/Users/santa/Downloads/monarca-logo.png.png` (1080×1080, RGB, no alpha) and `/mnt/c/Users/santa/Downloads/11.png` (contact page, carries the clean wordmark)
