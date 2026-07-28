@@ -53,10 +53,20 @@ function renderFilters() {
 }
 
 export function applyFilter(category) {
+  // Rebuilding the buttons below throws away the focused element, which would
+  // drop a keyboard user back to the top of the document on every filter they
+  // try. Remember whether focus was inside the group so it can be restored.
+  const hadFocus = document.activeElement && filters.contains(document.activeElement);
+
   currentCategory = category;
   const visible = filterByCategory(allProducts, category);
   renderGrid(visible);
   renderFilters();
+
+  if (hadFocus) {
+    const restored = filters.querySelector(`[data-category="${category}"]`);
+    if (restored) restored.focus();
+  }
   // Always count "producto(s)" and name the category separately. Using the
   // category label as the counted noun produces broken Spanish — "1 jabones",
   // and worse for Cabello, where "1 cabello" means nothing at all.

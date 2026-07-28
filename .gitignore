@@ -9,3 +9,7 @@ desktop.ini
 
 # Source material not for publication
 source-material/
+
+# Throwaway iframe harnesses used to screenshot the page at a real phone width
+_vt*.html
+_viewport-test.html
