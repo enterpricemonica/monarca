@@ -8,6 +8,7 @@ from PIL import Image, ImageFilter
 
 SOURCE_WREATH = "/mnt/c/Users/santa/Downloads/monarca-logo.png.png"
 SOURCE_MARK = "/mnt/c/Users/santa/Downloads/11.png"
+SOURCE_BUTTERFLY = "/mnt/c/Users/santa/Downloads/mariposaM.png"
 
 
 def remove_light_background(image, threshold=238, denoise=0):
@@ -149,11 +150,90 @@ def compress(image, colors=200):
     return image.quantize(colors=colors, method=Image.FASTOCTREE)
 
 
+def cut_out_from_white(image, threshold=238):
+    """Make the white BACKGROUND transparent while keeping white details.
+
+    The monarch's wings carry white spots. Thresholding on "is this pixel
+    white?" would punch holes straight through them. What actually separates
+    background from artwork is connectivity: the background is the white region
+    touching the image border, and the wing spots are white regions enclosed by
+    the black outline. So flood-fill inward from the edges and clear only what
+    the fill reaches.
+    """
+    from collections import deque
+
+    image = image.convert("RGBA")
+    width, height = image.size
+    pixels = image.load()
+
+    def is_pale(x, y):
+        r, g, b, a = pixels[x, y]
+        return a > 0 and min(r, g, b) >= threshold
+
+    seen = bytearray(width * height)
+    queue = deque()
+    for x in range(width):
+        for y in (0, height - 1):
+            if is_pale(x, y) and not seen[y * width + x]:
+                seen[y * width + x] = 1
+                queue.append((x, y))
+    for y in range(height):
+        for x in (0, width - 1):
+            if is_pale(x, y) and not seen[y * width + x]:
+                seen[y * width + x] = 1
+                queue.append((x, y))
+
+    while queue:
+        x, y = queue.popleft()
+        pixels[x, y] = pixels[x, y][:3] + (0,)
+        for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+            if 0 <= nx < width and 0 <= ny < height and not seen[ny * width + nx]:
+                if is_pale(nx, ny):
+                    seen[ny * width + nx] = 1
+                    queue.append((nx, ny))
+    return image
+
+
+def botanicals(wreath):
+    """Cut individual flowers out of the wreath for use around the site.
+
+    The brand's only artwork is the wreath, and using it whole in exactly one
+    place left every other section looking like a generic template. These crops
+    give the rest of the page the same watercolour vocabulary — a corner rose, a
+    slender sprig for a section edge, a garland to close a band — without
+    inventing decoration that isn't the client's own.
+
+    Boxes were chosen by mapping where the wreath actually carries ink, then
+    trimmed to their content so each file is exactly its flower and nothing else.
+    """
+    regions = {
+        "rose-corner": (200, 30, 590, 230),
+        "sprig-tall": (30, 180, 310, 500),
+        "sprig-slim": (730, 380, 910, 750),
+        "garland": (230, 690, 790, 930),
+    }
+    for name, box in regions.items():
+        crop = wreath.crop(box)
+        crop = crop.crop(crop.getbbox())      # drop the surrounding emptiness
+        crop.thumbnail((420, 420), Image.LANCZOS)
+        compress(crop).save(f"assets/botanical-{name}.png", optimize=True)
+        print(f"wrote assets/botanical-{name}.png", crop.size)
+
+
 def main():
     wreath = clear_centre(remove_light_background(Image.open(SOURCE_WREATH)))
     wreath.thumbnail((960, 960), Image.LANCZOS)
     compress(wreath).save("assets/wreath-monarca.png", optimize=True)
     print("wrote assets/wreath-monarca.png", wreath.size)
+
+    botanicals(wreath)
+
+    # The client's own standalone monarch, for use at any size across the site.
+    butterfly = cut_out_from_white(Image.open(SOURCE_BUTTERFLY))
+    butterfly = butterfly.crop(butterfly.getbbox())
+    butterfly.thumbnail((600, 600), Image.LANCZOS)
+    compress(butterfly).save("assets/butterfly.png", optimize=True)
+    print("wrote assets/butterfly.png", butterfly.size)
 
     # The wordmark occupies roughly the middle band of the contact page.
     page = Image.open(SOURCE_MARK)
