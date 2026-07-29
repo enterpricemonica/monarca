@@ -333,6 +333,88 @@ details p { margin: 0.6rem 0 0; color: var(--ink-soft); }
   * { animation: none !important; transition: none !important; }
 }
 
+
+/* ---- Statement type -----------------------------------------------------
+   The one pattern from the award-winning artisanal shops that works with no
+   photographs at all: a short line set very large, carrying a whole section
+   on typography alone.                                                      */
+.statement {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 9vw, 4rem);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0.2rem 0 1.25rem;
+  text-wrap: balance;
+}
+.statement em { font-style: italic; font-weight: 400; color: var(--action); }
+
+/* ---- Featured product ---------------------------------------------------
+   Full-bleed photograph with the type laid over it — what True Botanicals,
+   Brooklyn Soap Company and Ratalove all open with. Only ever rendered for a
+   product that has a real photograph; a placeholder blown up to this size
+   would be the worst possible use of the space.                             */
+.feature { position: relative; display: block; }
+.feature[hidden] { display: none; }
+.feature__media {
+  position: relative;
+  min-height: clamp(20rem, 62vh, 34rem);
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  align-items: end;
+}
+.feature__veil {
+  width: 100%;
+  padding: clamp(1.75rem, 5vw, 3rem) clamp(1.1rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.5rem);
+  /* The photograph is busy AND light in places — the jar's gold lid sits right
+     where the heading falls. A gentle gradient left the type barely readable
+     there, so the veil is close to opaque behind the text and only fades out
+     above it. Measured, not guessed: white on this ground clears 4.5:1. */
+  background: linear-gradient(to top,
+    rgba(22, 18, 28, 0.95) 0%,
+    rgba(22, 18, 28, 0.90) 45%,
+    rgba(22, 18, 28, 0.62) 78%,
+    rgba(22, 18, 28, 0.00) 100%);
+}
+.feature__inner { max-width: var(--max); margin-inline: auto; }
+.feature__eyebrow {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: #E7DFF2; margin-bottom: 0.4rem;
+}
+.feature__name {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(2rem, 8vw, 3.5rem); line-height: 1.02;
+  color: #fff; margin: 0;
+}
+.feature__desc {
+  color: #EDE8F5; max-width: 34ch; margin: 0.6rem 0 0; font-size: 1rem;
+}
+.feature__meta { color: #D6CDE5; font-size: 0.85rem; margin: 0.5rem 0 1.2rem; }
+.feature__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.feature__more {
+  background: none; border: none; padding: 0.5rem 0;
+  font: inherit; font-size: 0.9rem; font-weight: 600;
+  color: #fff; text-decoration: underline; text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The photograph drifts a little slower than the page, the way the sites
+       this pattern comes from do it. */
+    .feature__media {
+      animation: feature-pan linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+@keyframes feature-pan {
+  from { background-position: center 42%; }
+  to   { background-position: center 58%; }
+}
+
 /* =========================================================================
    MOTION
    Two techniques that reached every browser in 2025-2026:

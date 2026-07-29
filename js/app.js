@@ -59,6 +59,38 @@ function bandFor(product) {
     </button>`;
 }
 
+const feature = document.getElementById("destacado");
+
+/* The first product with a real photograph gets the full-bleed opening block.
+   Deliberately data-driven: while no product has a photo the section simply
+   stays hidden, and it starts working by itself the day one is added. */
+function renderFeature() {
+  const product = allProducts.find((p) => p.photo && p.available);
+  if (!feature || !product) return;
+
+  feature.hidden = false;
+  feature.innerHTML = `
+    <div class="feature__media" style="background-image:url('assets/products/${product.photo}')">
+      <div class="feature__veil">
+        <div class="feature__inner">
+          <p class="feature__eyebrow">${CATEGORY_LABELS[product.category] ?? "Destacado"}</p>
+          <h2 class="feature__name">${product.name}</h2>
+          <p class="feature__desc">${product.description}</p>
+          <p class="feature__meta">${product.size} · ${formatPrice(product.price)}</p>
+          <div class="feature__actions">
+            <a class="btn btn--action" target="_blank" rel="noopener"
+               href="${whatsappUrl(buildOrderMessage(product))}">Pedir por WhatsApp</a>
+            <button class="feature__more" type="button" data-id="${product.id}">Ver detalles</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  feature.querySelector(".feature__more").addEventListener("click", (event) => {
+    openDetail(event.currentTarget.dataset.id);
+  });
+}
+
 export function renderGrid(products) {
   grid.innerHTML = products.length ? products.map(bandFor).join("") : emptyStateMarkup();
 }
@@ -285,6 +317,7 @@ async function start() {
     return;
   }
 
+  renderFeature();
   applyFilter("all");
   openFromUrl();
 }
