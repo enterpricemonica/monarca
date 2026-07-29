@@ -37,7 +37,7 @@
   },
   {
     "id": "shampoo-artesanal",
-    "name": "Shampoo artesanal",
+    "name": "Shampoo sólido artesanal",
     "category": "hair",
     "price": null,
     "size": "Consultar presentación",
@@ -81,6 +81,21 @@
     ],
     "artisanNote": "Unas gotas sobre el rostro limpio, con la piel aún húmeda.",
     "photo": "serum-de-linaza-y-clavo.jpg",
+    "available": true
+  },
+  {
+    "id": "shampoo-de-romero-y-jengibre",
+    "name": "Shampoo de romero y jengibre",
+    "category": "hair",
+    "price": null,
+    "size": "Consultar presentación",
+    "description": "Shampoo líquido artesanal de romero y jengibre, de aroma herbal y especiado. Viene en frasco con dosificador, para el lavado diario.",
+    "ingredients": [
+      "Romero",
+      "Jengibre"
+    ],
+    "artisanNote": null,
+    "photo": null,
     "available": true
   }
 ]
