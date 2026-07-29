@@ -62,9 +62,23 @@
         <h2>Catálogo</h2>
         <div class="filters" id="filters" role="group" aria-label="Filtrar por categoría"></div>
         <p class="catalog__status" id="catalog-status" role="status"></p>
+        <div class="rail__nav" id="rail-nav" hidden>
+          <button class="rail__btn" type="button" data-dir="-1" aria-label="Ver productos anteriores">‹</button>
+          <button class="rail__btn" type="button" data-dir="1" aria-label="Ver más productos">›</button>
+        </div>
         <div class="bands" id="catalog-grid"></div>
       </div>
     </section>
+
+    <!-- One ticker on the whole page. Two would be noise. -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>Hecho a mano</span><span>·</span><span>Lotes pequeños</span><span>·</span>
+        <span>Sin prisa</span><span>·</span><span>Plantas que conocemos</span><span>·</span>
+        <span>Hecho a mano</span><span>·</span><span>Lotes pequeños</span><span>·</span>
+        <span>Sin prisa</span><span>·</span><span>Plantas que conocemos</span><span>·</span>
+      </div>
+    </div>
 
     <section id="artesana" class="section section--tint">
       <img src="assets/botanical-sprig-tall.png" alt="" class="sprig sprig--artisan" />

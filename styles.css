@@ -334,6 +334,125 @@ details p { margin: 0.6rem 0 0; color: var(--ink-soft); }
 }
 
 
+
+/* ---- Ticker -------------------------------------------------------------
+   Decorative only, so it is aria-hidden — a screen reader announcing an
+   endlessly repeating strip of words would be maddening, and it says nothing
+   the page does not already say in a heading.                               */
+.ticker {
+  background: var(--action);
+  color: #fff;
+  padding: 0.7rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker__track { display: inline-block; will-change: transform; }
+.ticker span {
+  display: inline-block;
+  padding-inline: 1.1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+@keyframes ticker-slide { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .ticker__track { animation: ticker-slide 26s linear infinite; }
+}
+
+/* ---- Product rail -------------------------------------------------------
+   A horizontal, snapping carousel. The card width is set so the NEXT card
+   always peeks past the edge — that overhang is the only thing telling a
+   visitor the row scrolls at all. Without it a carousel silently hides half
+   the catalogue.                                                            */
+.rail {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: 0.15rem;
+  padding: 0.25rem 0.15rem 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--lilac) transparent;
+  overscroll-behavior-x: contain;
+}
+.rail::-webkit-scrollbar { height: 6px; }
+.rail::-webkit-scrollbar-thumb { background: var(--lilac); border-radius: 999px; }
+
+.rail__card {
+  flex: 0 0 min(76vw, 19rem);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--lilac-pale);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+@media (min-width: 46rem) { .rail__card { flex-basis: 19rem; } }
+
+.rail__art {
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  background: var(--paper-deep);
+  overflow: hidden;
+}
+.rail__photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rail__bloom { width: 52%; height: auto; }
+.rail__body { padding: 1rem 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 1; }
+.rail__kicker {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+.rail__name { font-family: var(--serif); font-size: 1.5rem; line-height: 1.05; }
+.rail__desc {
+  color: var(--ink-soft); font-size: 0.88rem; margin: 0;
+  /* Two lines, so every card in the row is the same height. */
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.rail__meta { margin-top: auto; padding-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: baseline; }
+.rail__size { color: var(--ink-soft); font-size: 0.8rem; }
+.rail__price { font-weight: 600; font-size: 1rem; }
+.rail__price--ask { font-weight: 400; font-size: 0.8rem; color: var(--ink-soft); }
+.rail__sold-out {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #fff; background: var(--ink-soft); padding: 0.1rem 0.55rem; border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rail { scroll-behavior: smooth; }
+  .rail__card { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+  .rail__card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px -14px rgba(74, 68, 88, 0.45);
+    border-color: var(--lilac);
+  }
+  .rail__photo, .rail__bloom { transition: transform 0.5s ease; }
+  .rail__card:hover .rail__photo { transform: scale(1.05); }
+  .rail__card:hover .rail__bloom { transform: scale(1.06) rotate(-2deg); }
+}
+
+/* Arrows, for a mouse and for anyone who does not think to drag. Hidden on
+   touch widths, where swiping is the obvious gesture and the peek shows it. */
+.rail__nav { display: none; gap: 0.5rem; justify-content: flex-end; margin-bottom: 0.6rem; }
+@media (min-width: 46rem) { .rail__nav { display: flex; } }
+/* The media query above would otherwise re-show the arrows even when JS has
+   set [hidden] because everything already fits. */
+.rail__nav[hidden] { display: none; }
+.rail__btn {
+  width: 2.4rem; height: 2.4rem;
+  border: 1px solid var(--lilac); border-radius: 999px;
+  background: transparent; color: var(--action);
+  font-size: 1.1rem; line-height: 1; cursor: pointer;
+}
+.rail__btn:disabled { opacity: 0.35; cursor: default; }
+
 /* ---- Statement type -----------------------------------------------------
    The one pattern from the award-winning artisanal shops that works with no
    photographs at all: a short line set very large, carrying a whole section

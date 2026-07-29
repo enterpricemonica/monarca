@@ -91,8 +91,65 @@ function renderFeature() {
   });
 }
 
+function railCardFor(product) {
+  const soldOut = product.available
+    ? ""
+    : `<span class="rail__sold-out">Agotado</span>`;
+  const askPrice = product.price === null || product.price === undefined;
+  const art = product.photo
+    ? `<img class="rail__photo" src="assets/products/${product.photo}" alt="${product.name}" loading="lazy" />`
+    : `<img class="rail__bloom" src="${bloomFor(product)}" alt="" loading="lazy" />`;
+  return `
+    <button class="band rail__card" data-id="${product.id}" type="button">
+      <span class="rail__art">${art}</span>
+      <span class="rail__body">
+        <span class="rail__kicker">${CATEGORY_LABELS[product.category] ?? ""}</span>
+        <span class="rail__name">${product.name}</span>
+        <span class="rail__desc">${product.description}</span>
+        <span class="rail__meta">
+          <span class="rail__size">${product.size}</span>
+          <span class="rail__price${askPrice ? " rail__price--ask" : ""}">${formatPrice(product.price)}</span>
+          ${soldOut}
+        </span>
+      </span>
+    </button>`;
+}
+
 export function renderGrid(products) {
-  grid.innerHTML = products.length ? products.map(bandFor).join("") : emptyStateMarkup();
+  if (!products.length) {
+    grid.innerHTML = emptyStateMarkup();
+    grid.className = "bands";
+    return;
+  }
+  grid.className = "rail";
+  grid.innerHTML = products.map(railCardFor).join("");
+  updateRailNav();
+}
+
+/* The arrows only exist for pointer users; touch users get the peeking card.
+   They stay in sync with the scroll position so they can be disabled at the
+   ends rather than silently doing nothing. */
+const railNav = document.getElementById("rail-nav");
+
+function updateRailNav() {
+  if (!railNav) return;
+  const atStart = grid.scrollLeft <= 4;
+  const atEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 4;
+  railNav.hidden = grid.scrollWidth <= grid.clientWidth + 4;
+  railNav.querySelector("[data-dir='-1']").disabled = atStart;
+  railNav.querySelector("[data-dir='1']").disabled = atEnd;
+}
+
+if (railNav) {
+  railNav.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-dir]");
+    if (!button) return;
+    const card = grid.querySelector(".rail__card");
+    const step = card ? card.getBoundingClientRect().width + 16 : grid.clientWidth * 0.8;
+    grid.scrollBy({ left: step * Number(button.dataset.dir) });
+  });
+  grid.addEventListener("scroll", updateRailNav, { passive: true });
+  window.addEventListener("resize", updateRailNav);
 }
 
 const filters = document.getElementById("filters");
