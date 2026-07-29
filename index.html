@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monarca — Productos artesanales</title>
-  <meta name="description" content="Tónicos, perfumes y aceites artesanales. Pedidos por WhatsApp." />
+  <meta name="description" content="Tónicos, perfumes y aceites artesanales, hechos a mano en lotes pequeños. Pedidos por WhatsApp." />
   <meta property="og:title" content="Monarca — Productos artesanales" />
-  <meta property="og:description" content="Tónicos, perfumes y aceites artesanales. Pedidos por WhatsApp." />
+  <meta property="og:description" content="Tónicos, perfumes y aceites artesanales, hechos a mano en lotes pequeños. Pedidos por WhatsApp." />
   <meta property="og:image" content="https://enterpricemonica.github.io/monarca/assets/wreath-monarca.png" />
   <meta property="og:url" content="https://enterpricemonica.github.io/monarca/" />
   <meta property="og:type" content="website" />
@@ -20,7 +20,7 @@
 <body>
   <header class="header">
     <a class="header__brand" href="./">
-      <img src="assets/logo-monarca.png" alt="Monarca" class="header__logo" />
+      <img src="assets/logo-monarca.png" alt="Monarca" class="header__logo" width="600" height="248" />
     </a>
     <nav class="header__nav">
       <a href="#catalogo">Catálogo</a>
@@ -42,7 +42,7 @@
   <main>
     <section class="hero">
       <div class="hero__art">
-        <img src="assets/wreath-monarca.png" alt="" class="hero__wreath" />
+        <img src="assets/wreath-monarca.png" alt="" class="hero__wreath" width="960" height="960" />
         <div class="hero__text">
           <h1>Monarca</h1>
           <p class="hero__tagline">Es el momento perfecto para florecer y brillar.</p>
@@ -53,48 +53,68 @@
     </section>
 
     <section id="catalogo" class="section">
-      <h2>Catálogo</h2>
-      <div class="filters" id="filters" role="group" aria-label="Filtrar por categoría"></div>
-      <p class="catalog__status" id="catalog-status" role="status"></p>
-      <div class="grid" id="catalog-grid"></div>
+      <div class="section__inner">
+        <p class="eyebrow">Hecho a mano</p>
+        <h2>Catálogo</h2>
+        <div class="filters" id="filters" role="group" aria-label="Filtrar por categoría"></div>
+        <p class="catalog__status" id="catalog-status" role="status"></p>
+        <div class="bands" id="catalog-grid"></div>
+      </div>
     </section>
 
-    <section id="artesana" class="section section--artisan">
-      <h2>Sobre la artesana</h2>
-      <p>
-        Soy Sandra Santamaría. Preparo cada producto a mano, en lotes pequeños, con
-        plantas que conozco y recetas que he ido afinando con los años.
-      </p>
-      <p>Será un placer asesorarte y ayudarte a elegir lo que mejor te sirva.</p>
+    <section id="artesana" class="section section--tint">
+      <img src="assets/botanical-sprig-tall.png" alt="" class="sprig sprig--artisan" />
+      <div class="section__inner artisan">
+        <div class="artisan__art">
+          <img src="assets/butterfly.png" alt="" width="382" height="447" />
+        </div>
+        <div>
+          <p class="eyebrow">La artesana</p>
+          <p class="artisan__quote">«Preparo cada producto a mano, en lotes pequeños, con plantas que conozco.»</p>
+          <p>
+            Soy Sandra Santamaría. Las recetas las he ido afinando con los años, y cada
+            lote sale de mi propia cocina.
+          </p>
+          <p>Será un placer asesorarte y ayudarte a elegir lo que mejor te sirva.</p>
+        </div>
+      </div>
     </section>
 
     <section id="ingredientes" class="section">
-      <h2>Nuestros ingredientes</h2>
-      <p class="section__intro">
-        Cada preparación parte de plantas escogidas por su aroma y su tradición de uso.
-      </p>
-      <ul class="ingredients" id="ingredients-list">
-        <li><strong>Manzanilla</strong> — de aroma suave y familiar, tradicionalmente asociada a la calma.</li>
-        <li><strong>Caléndula</strong> — clásica en la cosmética artesanal, de tono cálido y dorado.</li>
-        <li><strong>Lavanda</strong> — aroma envolvente que acompaña los momentos de descanso.</li>
-        <li><strong>Romero</strong> — herbal y fresco, muy usado en preparaciones para el cabello.</li>
-        <li><strong>Rosa</strong> — delicada y floral, la base de nuestra agua de rosas.</li>
-        <li><strong>Menta</strong> — refrescante, de aroma limpio y despierto.</li>
-        <li><strong>Ylang-ylang</strong> — floral e intenso, muy presente en perfumería.</li>
-        <li><strong>Cedro</strong> — amaderado y sereno, de fondo cálido.</li>
-      </ul>
+      <div class="section__inner">
+        <p class="eyebrow">De dónde sale</p>
+        <h2>Nuestros ingredientes</h2>
+        <p class="section__intro">
+          Cada preparación parte de plantas escogidas por su aroma y su tradición de uso.
+        </p>
+        <ul class="ingredients">
+          <li><strong>Manzanilla</strong> De aroma suave y familiar, tradicionalmente asociada a la calma.</li>
+          <li><strong>Caléndula</strong> Clásica en la cosmética artesanal, de tono cálido y dorado.</li>
+          <li><strong>Lavanda</strong> Aroma envolvente que acompaña los momentos de descanso.</li>
+          <li><strong>Romero</strong> Herbal y fresco, muy usado en preparaciones para el cabello.</li>
+          <li><strong>Rosa</strong> Delicada y floral, la base de nuestra agua de rosas.</li>
+          <li><strong>Ciprés</strong> Verde y resinoso, de carácter sereno.</li>
+          <li><strong>Ylang-ylang</strong> Floral e intenso, muy presente en perfumería.</li>
+          <li><strong>Cedro</strong> Amaderado y cálido, de fondo profundo.</li>
+        </ul>
+      </div>
     </section>
 
-    <section id="preguntas" class="section">
-      <h2>Preguntas frecuentes</h2>
-      <details><summary>¿Cómo hago un pedido?</summary>
-        <p>Elige el producto y toca «Pedir por WhatsApp». Se abre un mensaje ya escrito con
-        el producto que te interesa; sólo tienes que enviarlo.</p></details>
-      <details><summary>¿Cómo se conservan los productos?</summary>
-        <p>En un lugar fresco y fuera del sol directo. Al ser preparaciones artesanales sin
-        conservantes fuertes, se aprovechan mejor en los meses siguientes a su compra.</p></details>
-      <details><summary>¿Puedo pedir varios productos?</summary>
-        <p>Sí. Escríbenos por WhatsApp y armamos el pedido completo contigo.</p></details>
+    <section id="preguntas" class="section section--tint">
+      <div class="section__inner">
+        <p class="eyebrow">Antes de pedir</p>
+        <h2>Preguntas frecuentes</h2>
+        <div class="faq">
+          <details><summary>¿Cómo hago un pedido?</summary>
+            <p>Elige el producto y toca «Pedir por WhatsApp». Se abre un mensaje ya escrito con
+            el producto que te interesa; sólo tienes que enviarlo.</p></details>
+          <details><summary>¿Cómo se conservan los productos?</summary>
+            <p>En un lugar fresco y fuera del sol directo. Al ser preparaciones artesanales sin
+            conservantes fuertes, se aprovechan mejor en los meses siguientes a su compra.</p></details>
+          <details><summary>¿Puedo pedir varios productos?</summary>
+            <p>Sí. Escríbenos por WhatsApp y armamos el pedido completo contigo.</p></details>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -106,6 +126,7 @@
   </aside>
 
   <footer class="footer">
+    <img src="assets/botanical-garland.png" alt="" class="footer__garland" />
     <img src="assets/logo-monarca.png" alt="" class="footer__logo" />
     <p>Sandra Santamaría ·
       <a id="footer-whatsapp"

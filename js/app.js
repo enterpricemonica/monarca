@@ -12,47 +12,55 @@ const WHATSAPP_GREETING = whatsappUrl(`Hola ${ARTISAN_NAME}, quisiera más infor
 
 let allProducts = [];
 
-/** Product image, or a branded tile when there is no photo yet. */
-function mediaFor(product) {
-  if (product.photo) {
-    return `<img class="card__media" src="assets/products/${product.photo}"
-                 alt="${product.name}" loading="lazy" />`;
-  }
-  // A <span>, not a <div>: the card is a <button>, which only accepts phrasing content.
-  return `<span class="card__placeholder" aria-hidden="true">🦋<br />${product.name}</span>`;
+/* The brand's own watercolour, used where a photograph will eventually go.
+   Rotated per product so no two read the same, and picked from a hash of the
+   id rather than the list index so a product keeps its bloom when filtered. */
+const BLOOMS = [
+  "assets/butterfly.png",
+  "assets/botanical-sprig-slim.png",
+  "assets/botanical-rose-corner.png",
+  "assets/botanical-sprig-tall.png",
+];
+
+function bloomFor(product) {
+  let hash = 0;
+  for (const ch of product.id) hash = (hash + ch.charCodeAt(0)) % BLOOMS.length;
+  return BLOOMS[hash];
 }
 
-function cardFor(product) {
+/** Product photograph, or the brand bloom while none exists. */
+function mediaFor(product, cls) {
+  if (product.photo) {
+    return `<img class="${cls}" src="assets/products/${product.photo}"
+                 alt="${product.name}" loading="lazy" />`;
+  }
+  return `<img class="band__bloom" src="${bloomFor(product)}" alt="" loading="lazy" />`;
+}
+
+function bandFor(product) {
   const soldOut = product.available
     ? ""
-    : `<span class="card__sold-out">Agotado</span>`;
+    : `<span class="band__sold-out">Agotado</span>`;
+  const askPrice = product.price === null || product.price === undefined;
   return `
-    <button class="card" data-id="${product.id}" type="button">
-      ${mediaFor(product)}
-      <span class="card__body">
-        <span class="card__name">${product.name}</span>
-        <span class="card__size">${product.size}</span>
-        <span class="card__price">${formatPrice(product.price)}</span>
-        ${soldOut}
+    <button class="band" data-id="${product.id}" type="button">
+      <span class="band__art">${mediaFor(product, "band__photo")}</span>
+      <span class="band__body">
+        <span class="band__kicker">${CATEGORY_LABELS[product.category] ?? ""}</span>
+        <span class="band__name">${product.name}</span>
+        <span class="band__desc">${product.description}</span>
+        <span class="band__meta">
+          <span class="band__size">${product.size}</span>
+          <span class="band__price${askPrice ? " band__price--ask" : ""}">${formatPrice(product.price)}</span>
+          ${soldOut}
+        </span>
+        <span class="band__more">Ver detalles y pedir →</span>
       </span>
     </button>`;
 }
 
-/** Shown when a category filter narrows the catalogue down to zero products.
-    Never shown on first load or on the fetch-failure path — those cases
-    build their own grid content and never call renderGrid with an empty
-    list for that reason. */
-function emptyStateMarkup() {
-  return `
-    <p class="grid__empty">Aún no hay productos publicados en esta categoría.
-    Escríbenos y te contamos qué hay disponible.</p>
-    <p class="grid__empty">
-      <a class="btn btn--action" href="${WHATSAPP_GREETING}">Escribir por WhatsApp</a>
-    </p>`;
-}
-
 export function renderGrid(products) {
-  grid.innerHTML = products.length ? products.map(cardFor).join("") : emptyStateMarkup();
+  grid.innerHTML = products.length ? products.map(bandFor).join("") : emptyStateMarkup();
 }
 
 const filters = document.getElementById("filters");
@@ -60,7 +68,11 @@ let currentCategory = "all";
 
 function renderFilters() {
   const counts = countByCategory(allProducts);
-  const buttons = [["all", "Todos"], ...Object.entries(CATEGORY_LABELS)];
+  // Only offer categories that actually hold something. Six chips for three
+  // products, four of them leading nowhere, made the shop look like empty
+  // shelves.
+  const buttons = [["all", "Todos"], ...Object.entries(CATEGORY_LABELS)]
+    .filter(([key]) => key === "all" || counts[key] > 0);
   filters.innerHTML = buttons
     .map(([key, label]) => `
       <button class="filter" type="button" data-category="${key}"
@@ -107,7 +119,7 @@ const panelContent = document.getElementById("detail-content");
 function detailMarkup(product) {
   const media = product.photo
     ? `<img class="detail__media" src="assets/products/${product.photo}" alt="${product.name}" />`
-    : `<span class="card__placeholder" aria-hidden="true">🦋<br />${product.name}</span>`;
+    : `<div class="detail__bloom"><img src="${bloomFor(product)}" alt="" /></div>`;
 
   const note = product.artisanNote
     ? `<p class="detail__note"><strong>Recomendación de la artesana:</strong>
@@ -198,8 +210,8 @@ export function closeDetail() {
 }
 
 grid.addEventListener("click", (event) => {
-  const card = event.target.closest(".card");
-  if (card) openDetail(card.dataset.id);
+  const band = event.target.closest(".band");
+  if (band) openDetail(band.dataset.id);
 });
 
 document.getElementById("detail-close").addEventListener("click", closeDetail);
