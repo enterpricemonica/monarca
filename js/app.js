@@ -352,6 +352,41 @@ function openFromUrl() {
   }
 }
 
+/* Tell search engines what each product is, generated from the same data the
+   page renders so the two can never disagree.
+
+   Deliberately no `offers` block: Google needs a price to show a product rich
+   result, and every price here is still unknown. Emitting an offer with no
+   price would be markup that claims more than the page can back up. The moment
+   prices land in products.json this starts producing them with no code change. */
+function describeProducts() {
+  const base = location.origin + location.pathname;
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Catálogo Monarca",
+    numberOfItems: allProducts.length,
+    itemListElement: allProducts.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Product",
+        name: product.name,
+        description: product.description,
+        url: `${base}?p=${product.id}`,
+        ...(product.photo && { image: `${base}assets/products/${product.photo}` }),
+        material: product.ingredients.join(", "),
+        brand: { "@type": "Brand", name: "Monarca" },
+      },
+    })),
+  };
+
+  const tag = document.createElement("script");
+  tag.type = "application/ld+json";
+  tag.textContent = JSON.stringify(data);
+  document.head.appendChild(tag);
+}
+
 async function start() {
   for (const id of ["header-whatsapp", "footer-whatsapp"]) {
     document.getElementById(id).href = WHATSAPP_GREETING;
@@ -377,6 +412,7 @@ async function start() {
   renderFeature();
   applyFilter("all");
   openFromUrl();
+  describeProducts();
 }
 
 start();

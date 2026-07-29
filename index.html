@@ -16,6 +16,28 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Karla:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Structured data. This block describes the business and never changes, so
+       it is written straight into the HTML where a crawler always sees it. The
+       per-product data is injected by app.js from data/products.json instead of
+       being duplicated here, because a hand-kept second copy of the catalogue
+       would drift out of date the first time a product changed. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "@id": "https://enterpricemonica.github.io/monarca/#store",
+    "name": "Monarca",
+    "description": "Tónicos, aceites, jabones y cuidado del cabello artesanales, hechos a mano en lotes pequeños.",
+    "url": "https://enterpricemonica.github.io/monarca/",
+    "image": "https://enterpricemonica.github.io/monarca/assets/products/la-coleccion.jpg",
+    "logo": "https://enterpricemonica.github.io/monarca/assets/logo-monarca.png",
+    "telephone": "+573227084613",
+    "founder": { "@type": "Person", "name": "Sandra Santamaría" },
+    "address": { "@type": "PostalAddress", "addressCountry": "CO" },
+    "slogan": "Es el momento perfecto para florecer y brillar."
+  }
+  </script>
 </head>
 <body>
   <header class="header">
