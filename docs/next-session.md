@@ -1,6 +1,6 @@
 # 🔖 Where We Left Off — Monarca
 
-Resume point. Last updated: **2026-07-27**.
+Resume point. Last updated: **2026-07-28**.
 
 > Read this first. The build story is in [`journal.md`](journal.md); every command is in
 > [`commands.md`](commands.md); the design decisions are in
@@ -88,6 +88,26 @@ git add -A && git commit -m "..." && git push
 ```
 
 GitHub Pages redeploys in about a minute.
+
+## ⏭️ Start here tomorrow
+
+The site is live with **6 products, 4 of them photographed**. Nothing is broken and nothing
+is half-finished in the code. What is missing is content, and it is worth more than any
+further design work:
+
+1. **Prices.** All six read "Precio a consultar". This is the most expensive gap on the
+   site — it forces a customer to message just to learn something basic, and many will
+   simply leave instead.
+2. **Sizes.** Four of six read "Consultar presentación".
+3. **Photographs of the two shampoos**, with the lavender label.
+
+**Two answers needed from Monica**, both one line, both immediately applicable:
+- **Delivery: where, how much, how long?** The FAQ has no answer at all, and it is the
+  first question a Colombian customer asks.
+- **Instagram handle**, if there is one — the footer has no link.
+
+**Offered and not yet done:** a custom domain (`monarca.com.co`, roughly $10-40/year).
+Cosmetic, not functional.
 
 ## 📋 What the site is waiting on from Sandra
 
