@@ -42,11 +42,13 @@
   <main>
     <section class="hero">
       <div class="hero__art">
-        <img src="assets/wreath-monarca.png" alt="" class="hero__wreath" width="960" height="960" />
-        <div class="hero__text">
-          <h1>Monarca</h1>
-          <p class="hero__tagline">Es el momento perfecto para florecer y brillar.</p>
-        </div>
+        <!-- The artwork carries the brand name and the tagline in its own
+             lettering, so the image is the logo, not decoration. The heading
+             below repeats it as real text, hidden visually: without it the page
+             would have no <h1> at all for a screen reader or a search engine. -->
+        <img src="assets/wreath-monarca.png" alt="Monarca — es el momento perfecto para florecer y brillar"
+             class="hero__wreath" width="960" height="960" />
+        <h1 class="visually-hidden">Monarca</h1>
       </div>
       <p class="hero__sub">Tónicos, perfumes y aceites hechos a mano, en lotes pequeños.</p>
       <a class="btn btn--action" href="#catalogo">Ver el catálogo</a>

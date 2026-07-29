@@ -221,12 +221,22 @@ def botanicals(wreath):
 
 
 def main():
-    wreath = clear_centre(remove_light_background(Image.open(SOURCE_WREATH)))
-    wreath.thumbnail((960, 960), Image.LANCZOS)
-    compress(wreath).save("assets/wreath-monarca.png", optimize=True)
-    print("wrote assets/wreath-monarca.png", wreath.size)
+    full = remove_light_background(Image.open(SOURCE_WREATH))
 
-    botanicals(wreath)
+    # The hero uses the artwork exactly as the client drew it — wreath, script
+    # and tagline together. An earlier version emptied the centre so the
+    # heading could be real HTML text, but the lettering is part of the brand's
+    # identity and she asked for it back. The page still carries a real <h1>,
+    # visually hidden, so screen readers and search engines are not left with
+    # an image and nothing else.
+    hero = full.copy()
+    hero.thumbnail((960, 960), Image.LANCZOS)
+    compress(hero).save("assets/wreath-monarca.png", optimize=True)
+    print("wrote assets/wreath-monarca.png", hero.size)
+
+    # The flowers are still cut from a centre-cleared copy: cropping them from
+    # the lettered version would drag fragments of type into the bouquets.
+    botanicals(clear_centre(full))
 
     # The client's own standalone monarch, for use at any size across the site.
     butterfly = cut_out_from_white(Image.open(SOURCE_BUTTERFLY))
