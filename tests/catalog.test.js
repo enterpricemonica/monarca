@@ -16,6 +16,7 @@ test("category labels are the Spanish names shown to customers", () => {
   assert.equal(CATEGORY_LABELS.oils, "Aceites");
   assert.equal(CATEGORY_LABELS.soaps, "Jabones");
   assert.equal(CATEGORY_LABELS.hair, "Cabello");
+  assert.equal(CATEGORY_LABELS.creams, "Cremas");
 });
 
 test("filterByCategory narrows to one category", () => {
@@ -46,5 +47,5 @@ test("findById returns the product or null, never undefined", () => {
 
 test("countByCategory counts every category, including empty ones", () => {
   assert.deepEqual(countByCategory(products),
-    { all: 5, tonics: 2, perfumes: 1, oils: 1, soaps: 1, hair: 0 });
+    { all: 5, tonics: 2, perfumes: 1, oils: 1, soaps: 1, hair: 0, creams: 0 });
 });

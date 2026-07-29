@@ -3,7 +3,7 @@
     "id": "agua-de-rosas",
     "name": "Agua de rosas",
     "category": "tonics",
-    "price": null,
+    "price": 20000,
     "size": "250 ml",
     "description": "Tónico facial refrescante de aroma suave, elaborado de forma artesanal.",
     "ingredients": [
@@ -18,7 +18,7 @@
     "id": "jabon-artesanal",
     "name": "Jabón artesanal",
     "category": "soaps",
-    "price": null,
+    "price": 15000,
     "size": "Consultar presentación",
     "description": "Jabón de barra elaborado de forma artesanal, disponible en ocho aromas para elegir.",
     "ingredients": [
@@ -37,10 +37,10 @@
   },
   {
     "id": "exfoliante-de-cafe",
-    "name": "Exfoliante de café",
+    "name": "Exfoliante de café y aceite de coco",
     "category": "oils",
-    "price": null,
-    "size": "Consultar presentación",
+    "price": 30000,
+    "size": "200 g",
     "description": "Exfoliante corporal de café sobre base de aceite de coco, con romero y cedro. De textura granulada y aroma cálido y amaderado.",
     "ingredients": [
       "Café",
@@ -78,6 +78,45 @@
       "Romero",
       "Jengibre"
     ],
+    "artisanNote": null,
+    "photo": null,
+    "available": true
+  },
+  {
+    "id": "crema-de-calendula-y-manzanilla",
+    "name": "Crema de caléndula y manzanilla",
+    "category": "creams",
+    "price": 20000,
+    "size": "60 g",
+    "description": "Crema corporal de caléndula y manzanilla, de textura suave y aroma delicado. Para el cuidado diario de la piel.",
+    "ingredients": [
+      "Caléndula",
+      "Manzanilla"
+    ],
+    "artisanNote": null,
+    "photo": null,
+    "available": true
+  },
+  {
+    "id": "post-afeitada",
+    "name": "Post afeitada",
+    "category": "tonics",
+    "price": 20000,
+    "size": "120 ml",
+    "description": "Splash refrescante para después de afeitar, de aroma limpio y sensación fresca al aplicarlo.",
+    "ingredients": [],
+    "artisanNote": null,
+    "photo": null,
+    "available": true
+  },
+  {
+    "id": "splash-piel-acneica",
+    "name": "Splash piel acneica",
+    "category": "tonics",
+    "price": 20000,
+    "size": "120 ml",
+    "description": "Splash facial formulado para piel acneica, de textura ligera y aroma herbal. Ayuda a mantener la piel limpia y equilibrada.",
+    "ingredients": [],
     "artisanNote": null,
     "photo": null,
     "available": true

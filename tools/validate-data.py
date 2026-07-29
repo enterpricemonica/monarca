@@ -8,7 +8,7 @@ import json
 import re
 import sys
 
-CATEGORIES = {"tonics", "perfumes", "oils", "soaps", "hair"}
+CATEGORIES = {"tonics", "perfumes", "oils", "soaps", "hair", "creams"}
 REQUIRED = {
     "id": str, "name": str, "category": str, "size": str,
     "description": str, "ingredients": list, "available": bool,

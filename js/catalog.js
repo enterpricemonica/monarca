@@ -5,6 +5,7 @@ export const CATEGORY_LABELS = {
   oils: "Aceites",
   soaps: "Jabones",
   hair: "Cabello",
+  creams: "Cremas",
 };
 
 /** Return the products in one category, or all of them for "all". */

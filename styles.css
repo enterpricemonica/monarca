@@ -112,7 +112,16 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .header__brand { grid-area: brand; display: inline-flex; }
 .header__logo { height: 40px; width: auto; display: block; }
 
-.header__nav { grid-area: nav; display: flex; gap: 1.4rem; }
+/* Wraps rather than overflowing. With four items the row no longer fits a
+   360px phone, and `overflow: hidden` on the body meant the last link was
+   simply unreachable instead of visibly cut. */
+.header__nav {
+  grid-area: nav;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1.05rem;
+}
+@media (min-width: 46rem) { .header__nav { gap: 1.5rem; flex-wrap: nowrap; } }
 
 /* Small caps with tracking, matching the section eyebrows, instead of the
    browser's default underlined link — which was what made the header read as
