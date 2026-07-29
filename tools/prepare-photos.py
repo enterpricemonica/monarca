@@ -18,6 +18,7 @@ PHOTOS = {
     "Exfoliante de Cafe.png": ("exfoliante-de-cafe.jpg", (0.02, 0.03, 0.98, 1.00)),
     "agua de rosas.png": ("agua-de-rosas.jpg", (0.14, 0.10, 0.92, 1.00)),
     "Sérum de linaza y clavo.png": ("serum-de-linaza-y-clavo.jpg", (0.16, 0.02, 0.90, 1.00)),
+    "crema de calendula.png": ("crema-de-calendula-y-manzanilla.jpg", (0.06, 0.04, 0.96, 1.00)),
 }
 
 MAX_EDGE = 1400
