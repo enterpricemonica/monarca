@@ -11,10 +11,11 @@ Resume point. Last updated: **2026-07-27**.
 
 ## 📍 State
 
-**The site is built, tested and working — and deliberately NOT published yet.**
+**The site is LIVE:** <https://enterpricemonica.github.io/monarca/> (published 2026-07-28).
 
-All eleven planned tasks are done. The repository is local only: no GitHub remote, nothing
-on the internet. Sandra's phone number is in the code but has not been made public.
+Repository: <https://github.com/enterpricemonica/monarca> (public). Verified on the live
+URL, not just locally: every asset, the data file, the shared `?p=` links, and the WhatsApp
+button all resolve correctly from the `/monarca/` subdirectory.
 
 - 13 tests passing (`node --test`)
 - Catalogue data valid (`python3 tools/validate-data.py`)
@@ -52,22 +53,21 @@ disproved that by breaking `filterByCategory` and watching the test fail on its 
 assertion. The remaining deferred minor findings were each judged and none blocks launch;
 they are listed in `.superpowers/sdd/progress.md`.
 
-## ⛔ The one decision blocking launch
+## ⚠️ Still unconfirmed, and it fails silently
 
-**Publishing puts Sandra's phone number (322 708 4613) on the public internet.** That is the
-point of the site, but it is her call, not ours. Nothing goes live until she says so.
+**Nobody has checked Sandra's WhatsApp number digit by digit.** `322 708 4613` was read off
+her printed catalogue. If a digit is wrong, nothing errors — orders simply never arrive.
+Ask her to open the live site and press the button herself.
 
-When she agrees, publishing is:
+## 🚀 Publishing again
+
+The remote is set up, so from now on it is just:
 
 ```bash
-cd /home/santa/projects/monarca
-gh repo create monarca --public --source=. --remote=origin --push
-gh api -X POST repos/enterpricemonica/monarca/pages -f "source[branch]=main" -f "source[path]=/"
+git add -A && git commit -m "..." && git push
 ```
 
-The site then appears at <https://enterpricemonica.github.io/monarca/>. After publishing,
-re-check the deep links and the WhatsApp button **against the live URL** — the site sits in
-a subdirectory there, and that is exactly where relative paths tend to break.
+GitHub Pages redeploys in about a minute.
 
 ## 📋 What the site is waiting on from Sandra
 
