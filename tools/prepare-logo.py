@@ -6,7 +6,10 @@ repeatable if the source artwork changes.
 """
 from PIL import Image, ImageFilter
 
-SOURCE_WREATH = "/mnt/c/Users/santa/Downloads/monarca-logo.png.png"
+# The catalogue's own cover page. Byte-for-byte this is the same artwork as
+# the earlier monarca-logo.png.png export (mean pixel difference 0.2/255), but
+# it is the file the client treats as canonical, so the pipeline follows it.
+SOURCE_WREATH = "/mnt/c/Users/santa/Downloads/1.png"
 SOURCE_MARK = "/mnt/c/Users/santa/Downloads/11.png"
 SOURCE_BUTTERFLY = "/mnt/c/Users/santa/Downloads/mariposaM.png"
 
