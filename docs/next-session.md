@@ -22,6 +22,26 @@ button all resolve correctly from the `/monarca/` subdirectory.
 - 168 KB total page weight, images included
 - Verified at 360 px and 768 px with no horizontal overflow
 
+## ✨ Motion (added 2026-07-28)
+
+Sandra asked for something more modern. Two techniques that reached every browser in
+2025-2026 do the work, and both cost **zero JavaScript**: scroll-driven animations
+(`animation-timeline: view()`) reveal sections as they enter, turn the wreath as the hero
+passes, and settle the sticky header; CSS transitions handle the hover and press feedback.
+
+Everything is wrapped twice — in `@supports` so an older browser gets the static page
+instead of a broken one, and in `prefers-reduced-motion` so anyone who asked their system
+for less movement gets none at all.
+
+**Ranges deliberately finish inside `entry`.** A range running into `cover` can be cut short
+for anything near the bottom of the document — the scroll ends before the range does and the
+element stays half-faded permanently. That was checked for, not assumed.
+
+**Not verifiable from here:** these animations run on the GPU compositor, which headless
+Chrome with `--disable-gpu` does not sample into screenshots. The wiring was verified (a
+real `ViewTimeline` is attached with the right range); the movement itself has to be
+watched on a real device.
+
 ## ✅ What works
 
 Category filters with live counts · product detail panel · WhatsApp order button pre-filled
@@ -73,7 +93,7 @@ GitHub Pages redeploys in about a minute.
 
 | Needed | For | Why it matters |
 |---|---|---|
-| **Product photographs** | `assets/products/` | The biggest single improvement available. Every product currently shows a placeholder. Consistency beats quality: one background, one light source, one distance for all of them. |
+| **Product photographs** | `assets/products/` | **Proven, not theoretical:** the coffee exfoliant is the only product with a real photo and it is visibly the strongest thing on the site. The other three still show a watercolour bloom. Consistency beats quality — one background, one light source, one distance for all of them. |
 | **Prices** | `price` in `products.json` | Every product currently reads "Precio a consultar". |
 | **Sizes for the soap and the shampoo** | `size` | Both read "Consultar presentación" because no printed page states a measurement, and inventing one would be lying to a customer. |
 | **The three Splash products** | new entries | Left out for now: their pages print no size and no ingredient list, and guessing ingredients for something that goes on skin is not acceptable. When the data arrives, rename **"Splash Piel Acneica" → "Splash Piel Equilibrante"** and **"Splash Relajante Muscular" → "Splash Aroma Relajante"** — the originals name a medical condition and a physiological effect. |
