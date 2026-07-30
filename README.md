@@ -48,6 +48,7 @@ GitHub Pages redeploys in about a minute.
 | `size` | Free text — `"250 ml"`, or `"Consultar presentación"` when unknown |
 | `photo` | Filename inside `assets/products/`, or `null` to show a brand watercolour |
 | `available` | `false` marks the product *Agotado* |
+| `featured` | Optional. `true` on **one** product puts it in the full-bleed block below the hero. Without it the block falls back to whichever product happens to be first with a photo — which hands the best spot on the site to file order. The validator rejects marking two. |
 
 Categories with no products are hidden from the filter bar automatically — an empty
 category never shows as an empty shelf.

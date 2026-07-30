@@ -65,9 +65,18 @@ def main(path="data/products.json"):
                     break
         if product.get("category") not in CATEGORIES:
             errors.append(f"{label}: category must be one of {sorted(CATEGORIES)}")
+        if "featured" in product and not isinstance(product["featured"], bool):
+            errors.append(f"{label}: 'featured' must be true or false")
         if product.get("id") in seen:
             errors.append(f"{label}: duplicate id")
         seen.add(product.get("id"))
+
+    featured = [p.get("id") for p in products
+                if isinstance(p, dict) and p.get("featured")]
+    if len(featured) > 1:
+        errors.append(
+            "only one product may be 'featured' (the hero block shows one): "
+            + ", ".join(featured))
 
     if errors:
         print(f"{len(errors)} problem(s):")

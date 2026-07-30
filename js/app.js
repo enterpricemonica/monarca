@@ -61,11 +61,16 @@ function bandFor(product) {
 
 const feature = document.getElementById("destacado");
 
-/* The first product with a real photograph gets the full-bleed opening block.
-   Deliberately data-driven: while no product has a photo the section simply
-   stays hidden, and it starts working by itself the day one is added. */
+/* The full-bleed opening block — the most valuable space on the page.
+
+   Which product fills it is an explicit choice: set "featured": true on one
+   entry in products.json. The fallback is the first product with a photograph,
+   which was a fine rule while only one product had one, but now simply hands
+   the best spot to whatever happens to sit first in the file. */
 function renderFeature() {
-  const product = allProducts.find((p) => p.photo && p.available);
+  const product =
+    allProducts.find((p) => p.featured && p.photo && p.available) ??
+    allProducts.find((p) => p.photo && p.available);
   if (!feature || !product) return;
 
   feature.hidden = false;

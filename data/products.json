@@ -12,7 +12,8 @@
     ],
     "artisanNote": "Hacer uso completo del producto para recibir los beneficios.",
     "photo": "agua-de-rosas.jpg",
-    "available": true
+    "available": true,
+    "featured": true
   },
   {
     "id": "jabon-artesanal",
