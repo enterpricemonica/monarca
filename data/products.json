@@ -12,8 +12,7 @@
     ],
     "artisanNote": "Hacer uso completo del producto para recibir los beneficios.",
     "photo": "agua-de-rosas.jpg",
-    "available": true,
-    "featured": true
+    "available": true
   },
   {
     "id": "jabon-artesanal",
@@ -96,7 +95,8 @@
     ],
     "artisanNote": "Aplicar sobre la piel limpia, con un masaje suave hasta que se absorba.",
     "photo": "crema-de-calendula-y-manzanilla.jpg",
-    "available": true
+    "available": true,
+    "featured": true
   },
   {
     "id": "post-afeitada",

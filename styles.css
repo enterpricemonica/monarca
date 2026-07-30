@@ -198,6 +198,17 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   font-size: 1.05rem;
 }
 
+/* Anchor targets need to clear the sticky header, or tapping a nav link scrolls
+   the section's heading underneath it. The header is taller on a phone, where
+   the nav wraps onto its own lines, so the offset shrinks at the breakpoint
+   where it collapses to a single row. */
+:target,
+.section,
+.feature { scroll-margin-top: 9rem; }
+@media (min-width: 46rem) {
+  .section, .feature, :target { scroll-margin-top: 5.5rem; }
+}
+
 /* ---- Sections ---- */
 .section {
   position: relative;
