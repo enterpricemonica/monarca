@@ -43,7 +43,7 @@ GitHub Pages redeploys in about a minute.
 | Field | Notes |
 |---|---|
 | `id` | Lowercase slug. **This is the public URL.** See the rules below. |
-| `category` | One of `tonics`, `perfumes`, `oils`, `soaps`, `hair` |
+| `category` | One of `tonics`, `perfumes`, `oils`, `soaps`, `hair`, `creams` |
 | `price` | Integer in Colombian pesos (`18000`), or `null` for "Precio a consultar" |
 | `size` | Free text — `"250 ml"`, or `"Consultar presentación"` when unknown |
 | `photo` | Filename inside `assets/products/`, or `null` to show a brand watercolour |
@@ -147,9 +147,9 @@ page and think it is broken.
 
 | | |
 |---|---|
-| **Prices** | Every product reads "Precio a consultar" — the largest remaining gap |
-| **Sizes** | Most read "Consultar presentación" |
-| **A shampoo photograph** | The only product without one |
+| **Two prices** | The linseed serum and the rosemary shampoo still read "Precio a consultar" |
+| **Three photographs** | The shampoo, the aftershave splash and the acne-prone splash |
+| **Two ingredient lists** | Neither splash has one; nothing was invented, since these go on skin |
 | **Customer reviews** | The strongest trust signal there is, and the site has none |
 | **Visit measurement** | Nobody knows yet whether anyone is arriving |
 
