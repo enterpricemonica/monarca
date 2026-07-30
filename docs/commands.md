@@ -97,5 +97,62 @@ were actually tested rather than assumed:
 ```javascript
 var d = document.querySelector('iframe').contentDocument;
 d.querySelector('[data-category="soaps"]').click();
-console.log(d.querySelectorAll('.card').length);
+console.log(d.querySelectorAll('.rail__card').length);
 ```
+
+---
+
+## Auditing the page instead of eyeballing it
+
+Everything below runs the page in an iframe (a real viewport of the width you ask for) and
+reports numbers. Reading numbers beats squinting at screenshots — all three bugs found on
+2026-07-29 came out of this, and none of them was visible at a glance.
+
+### The document outline
+
+Lists every heading in order and flags skipped levels. Two sections had lost their headings
+entirely and nobody had noticed, because visually nothing had changed.
+
+```javascript
+d.querySelectorAll('h1,h2,h3').forEach(h =>
+  console.log('  '.repeat(+h.tagName[1] - 1) + h.tagName + ': ' + h.textContent.trim()));
+```
+
+### Is any nav link off-screen?
+
+`overflow-x: hidden` on the body means an overflowing link is *invisible* rather than visibly
+cut, so it has to be measured.
+
+```javascript
+const last = d.querySelector('.header__nav').lastElementChild;
+console.log(last.getBoundingClientRect().right, 'of', d.documentElement.clientWidth);
+```
+
+### Does the sticky header cover anchor targets?
+
+Click each nav link and check where the section's first text lands versus the header height.
+
+```javascript
+d.querySelector('.header__nav a[href="#catalogo"]').click();
+const h = d.querySelector('.header').getBoundingClientRect().height;
+const t = d.querySelector('#catalogo .eyebrow').getBoundingClientRect().top;
+console.log(t >= h ? 'visible' : 'covered by the header');
+```
+
+### Measure the real page weight and speed
+
+```bash
+curl -sL -o /dev/null -w '%{size_download} bytes, %{time_starttransfer}s to first byte\n' \
+  https://enterpricemonica.github.io/monarca/
+```
+
+### Check the structured data parses
+
+```javascript
+d.querySelectorAll('script[type="application/ld+json"]')
+ .forEach(b => console.log(JSON.parse(b.textContent)['@type']));
+```
+
+Remember the two traps from earlier in this file: render inside an **iframe** (headless Chrome
+ignores `--window-size` for the layout viewport) and pass **`--virtual-time-budget`** (the
+catalogue is filled after an async fetch, so without it you photograph an empty page).

@@ -1,6 +1,6 @@
 # 🔖 Where We Left Off — Monarca
 
-Resume point. Last updated: **2026-07-28**.
+Resume point. Last updated: **2026-07-29**.
 
 > Read this first. The build story is in [`journal.md`](journal.md); every command is in
 > [`commands.md`](commands.md); the design decisions are in
@@ -17,10 +17,23 @@ Repository: <https://github.com/enterpricemonica/monarca> (public). Verified on 
 URL, not just locally: every asset, the data file, the shared `?p=` links, and the WhatsApp
 button all resolve correctly from the `/monarca/` subdirectory.
 
+**8 products · 6 with prices · 5 with real photographs.** Two days earlier it was 3 products,
+no prices and no photographs.
+
 - 13 tests passing (`node --test`)
 - Catalogue data valid (`python3 tools/validate-data.py`)
-- 168 KB total page weight, images included
-- Verified at 360 px and 768 px with no horizontal overflow
+- 236 KB on the critical path, ~70 ms to first byte, gzip active — measured on the live URL,
+  comfortably inside the 2.5 s target the 2026 guidance asks for
+- Verified at 360 px, 430 px, 768 px and 900 px with no horizontal overflow
+- Document outline: 1 `h1`, 5 `h2`, no level skips, no duplicate ids, no image without `alt`
+
+### The featured block
+
+The full-bleed product below the hero is an **explicit choice**: `"featured": true` on one
+entry in `data/products.json`. Currently the **calendula cream**. Without the flag it falls
+back to whichever product sits first with a photograph — which hands the most valuable space
+on the site to file order, which is how it was working by accident until 2026-07-29. The
+validator refuses to let two products claim it.
 
 ## ✨ Motion (added 2026-07-28)
 
@@ -95,19 +108,33 @@ The site is live with **6 products, 4 of them photographed**. Nothing is broken 
 is half-finished in the code. What is missing is content, and it is worth more than any
 further design work:
 
-1. **Prices.** All six read "Precio a consultar". This is the most expensive gap on the
-   site — it forces a customer to message just to learn something basic, and many will
-   simply leave instead.
-2. **Sizes.** Four of six read "Consultar presentación".
-3. **Photographs of the two shampoos**, with the lavender label.
+Prices landed on 2026-07-29. What is left, in order of value:
 
-**Two answers needed from Monica**, both one line, both immediately applicable:
-- **Delivery: where, how much, how long?** The FAQ has no answer at all, and it is the
-  first question a Colombian customer asks.
-- **Instagram handle**, if there is one — the footer has no link.
+1. **Two prices.** *Sérum de linaza y clavo* and *Shampoo de romero y jengibre* still read
+   "Precio a consultar".
+2. **Three photographs.** The shampoo, *Post afeitada* and *Splash piel acneica*. If those
+   three are shot together on the dark wooden board — the background that suits the brand
+   best — the catalogue closes in one go.
+3. **Two ingredient lists.** Neither splash has one. Nothing was invented, because these go
+   on skin and a customer may have allergies.
+4. **Customer reviews.** Per the 2026 research the single strongest trust signal there is
+   (+29-34% conversion, the number one factor customers say they trust), and the site has
+   none. Sandra almost certainly has happy customers who wrote to her on WhatsApp; three
+   real quotes with first names would be worth more than any further design work.
+5. **A visit counter.** Nobody knows whether anyone is arriving. GoatCounter was recommended
+   — free, no cookies, 3 KB — but it needs Monica to create the account; that is her email
+   and her acceptance of their terms, not something to do on her behalf. Once she has the
+   snippet it is a one-line change.
+
+**Answered on 2026-07-29:** delivery is coordinated case by case over WhatsApp (now in the
+FAQ), and there is no Instagram.
 
 **Offered and not yet done:** a custom domain (`monarca.com.co`, roughly $10-40/year).
 Cosmetic, not functional.
+
+**Already working and easy to overlook:** every order that arrives from the site carries the
+pre-filled message naming the product, so Sandra can already tell a site order from a random
+enquiry. That is order attribution without any analytics at all.
 
 ## 📋 What the site is waiting on from Sandra
 
